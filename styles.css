@@ -1,0 +1,313 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0c1e25 0%, #1a2b35 100%);
+    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #008399 0%, #005a6e 100%);
+    color: white;
+    padding: 25px 20px 20px 120px;
+    border-radius: 12px;
+    box-shadow: 0 6px 25px rgba(0, 131, 153, 0.3);
+    position: relative;
+    border: 1px solid rgba(0, 131, 153, 0.3);
+}
+
+.header-logo {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    height: 60px;
+    transform: translateY(-50%);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+header h1 {
+    font-size: 2.1em;
+    margin-bottom: 8px;
+    margin-top: 0;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+    font-size: 1.1em;
+    opacity: 0.95;
+    margin: 0;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.form-section, .list-section {
+    background: rgba(45, 45, 45, 0.95);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 131, 153, 0.2);
+    backdrop-filter: blur(10px);
+    border-left: 4px solid #008399;
+}
+
+.form-section h2, .list-section h2 {
+    margin-bottom: 25px;
+    color: #008399;
+    font-size: 1.8em;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-bottom: 2px solid rgba(0, 131, 153, 0.3);
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #008399;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid rgba(0, 131, 153, 0.3);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background-color: rgba(26, 26, 26, 0.8);
+    color: #e0e0e0;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #008399;
+    background-color: rgba(45, 45, 45, 0.9);
+    box-shadow: 0 0 0 3px rgba(0, 131, 153, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+button[type="submit"] {
+    width: 100%;
+    background: linear-gradient(135deg, #008399 0%, #00667a 100%);
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(0, 131, 153, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 131, 153, 0.5);
+}
+
+button[type="submit"]:active {
+    transform: translateY(-1px);
+}
+
+.filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.filters input,
+.filters select {
+    padding: 10px;
+    border: 2px solid #404040;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+.filters input:focus,
+.filters select:focus {
+    outline: none;
+    border-color: #008399;
+}
+
+.activities-list {
+    display: grid;
+    gap: 15px;
+}
+
+.activity-card {
+    background: rgba(45, 45, 45, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #008399;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 131, 153, 0.2);
+    backdrop-filter: blur(5px);
+    margin-bottom: 15px;
+}
+
+.activity-card:hover {
+    transform: translateX(5px);
+    background: rgba(61, 61, 61, 0.95);
+    box-shadow: 0 6px 20px rgba(0, 131, 153, 0.25);
+    border-color: rgba(0, 131, 153, 0.4);
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.activity-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #008399;
+}
+
+.activity-date {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.activity-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.activity-meta span {
+    background: #1a1a1a;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+    border: 1px solid #404040;
+}
+
+.activity-description {
+    color: #ccc;
+    line-height: 1.5;
+}
+
+.activity-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.activity-actions button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+.status-completado {
+    background: #27ae60 !important;
+    color: white !important;
+    border: none !important;
+}
+
+.status-pendiente {
+    background: #f39c12 !important;
+    color: white !important;
+    border: none !important;
+}
+
+.status-en-progreso {
+    background: #3498db !important;
+    color: white !important;
+    border: none !important;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+}
+
+.empty-state i {
+    font-size: 3em;
+    margin-bottom: 15px;
+    opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+    
+    .filters {
+        grid-template-columns: 1fr;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+    
+    .activity-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .activity-meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+}

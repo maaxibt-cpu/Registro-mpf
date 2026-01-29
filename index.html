@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Actividades Técnicas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="Logo MPF La Rioja" class="header-logo">
+            <h1>Registro de Actividades Técnicas</h1>
+            <p>Sistema de seguimiento de actividades del área técnica</p>
+        </header>
+
+        <main>
+            <section class="form-section">
+                <h2>Nueva Actividad</h2>
+                <form id="activityForm">
+                    <div class="form-group">
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" id="fecha" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tecnico">Técnico:</label>
+                        <input type="text" id="tecnico" placeholder="Nombre del técnico" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tipo">Tipo de Actividad:</label>
+                        <select id="tipo" required>
+                            <option value="">Seleccione el tipo</option>
+                            <option value="mantenimiento">Mantenimiento</option>
+                            <option value="reparacion">Reparación</option>
+                            <option value="instalacion">Instalación</option>
+                            <option value="soporte">Soporte Técnico</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="equipo">Equipo/Sistema:</label>
+                        <input type="text" id="equipo" placeholder="Nombre del equipo o sistema" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" placeholder="Describa la actividad realizada..." rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="estado">Estado:</label>
+                        <select id="estado" required>
+                            <option value="">Seleccione estado</option>
+                            <option value="completado">Completado</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en-progreso">En progreso</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit">Registrar Actividad</button>
+                </form>
+            </section>
+
+            <section class="list-section">
+                <h2>Actividades Registradas</h2>
+                <div class="filters">
+                    <input type="text" id="searchInput" placeholder="Buscar actividades...">
+                    <select id="filterTipo">
+                        <option value="">Todos los tipos</option>
+                        <option value="mantenimiento">Mantenimiento</option>
+                        <option value="reparacion">Reparación</option>
+                        <option value="instalacion">Instalación</option>
+                        <option value="soporte">Soporte Técnico</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                    <select id="filterEstado">
+                        <option value="">Todos los estados</option>
+                        <option value="completado">Completado</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="en-progreso">En progreso</option>
+                    </select>
+                </div>
+                
+                <div id="activitiesList" class="activities-list">
+                    <!-- Las actividades se cargarán aquí -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="model.js"></script>
+    <script src="view.js"></script>
+    <script src="controller.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
