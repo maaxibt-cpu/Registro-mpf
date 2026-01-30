@@ -11,6 +11,7 @@ class VistaPersonas {
         this.infoPaginacion = document.getElementById('infoPaginacion');
         
         this.personaSeleccionada = null;
+        this.personaEditando = null;
         this.paginaActual = 1;
         this.porPagina = 10;
         this.terminoBusqueda = '';
@@ -24,6 +25,10 @@ class VistaPersonas {
             this.terminoBusqueda = '';
             this.paginaActual = 1;
             this.actualizarVista();
+        } else {
+            // Limpiar formulario cuando se cierra el modal
+            this.formularioPersona.reset();
+            this.personaEditando = null;
         }
     }
 
@@ -58,10 +63,7 @@ class VistaPersonas {
             this.toggleModal(false);
         });
 
-        // Cancelar modal
-        document.getElementById('btnCancelarModal').addEventListener('click', () => {
-            this.toggleModal(false);
-        });
+        // Cancelar modal (botón eliminado, solo se usa la X)
 
         // Seleccionar persona
         this.btnSeleccionarPersona.addEventListener('click', () => {

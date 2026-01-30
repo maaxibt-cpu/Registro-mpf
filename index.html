@@ -14,6 +14,10 @@
             <p>Ministerio Público Fiscal - La Rioja</p>
         </header>
 
+        <div class="header-actions">
+            <button type="button" id="btnSolicitantes" class="btn-solicitantes" onclick="abrirModalSolicitantes()">👥 Solicitantes</button>
+        </div>
+
         <main>
             <section class="form-section">
                 <h2>Nueva Actividad</h2>
@@ -109,34 +113,16 @@
         <button type="button" id="exportBtn" class="btn-export">📥 Exportar Datos</button>
     </div>
 
-    <!-- Modal para gestión de personas -->
+    <!-- Modal para gestión de personas (Solo formulario de nuevo solicitante) -->
     <div id="modalPersonas" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Gestión de Solicitantes</h2>
-                <button id="btnCerrarModal" class="btn-cerrar">×</button>
+                <h2>Agregar Nuevo Solicitante</h2>
             </div>
             
             <div class="modal-body">
-                <!-- Búsqueda -->
-                <div class="search-section">
-                    <input type="text" id="busquedaPersonas" placeholder="Buscar solicitantes..." class="search-input">
-                </div>
-
-                <!-- Lista de personas -->
-                <div id="listaPersonas" class="personas-list">
-                    <!-- Las personas se cargarán aquí -->
-                </div>
-
-                <!-- Controles de paginación -->
-                <div class="pagination-controls">
-                    <div id="controlesPaginacion" class="pagination-buttons"></div>
-                    <div id="infoPaginacion" class="pagination-info"></div>
-                </div>
-
-                <!-- Formulario para nueva persona -->
+                <!-- Solo formulario para nueva persona -->
                 <div class="new-person-section">
-                    <h3>Agregar Nuevo Solicitante</h3>
                     <form id="formularioPersona">
                         <div class="form-row">
                             <input type="text" id="nuevaPersonaNombre" placeholder="Nombre" required>
@@ -158,22 +144,60 @@
                                 <option value="Fiscal">Fiscal</option>
                             </select>
                         </div>
-                        <button type="submit">Agregar Solicitante</button>
+                        <div class="form-buttons">
+                            <button type="submit">Agregar Solicitante</button>
+                            <button type="button" id="btnCancelarModal" class="btn-cancelar">Cancelar</button>
+                        </div>
                     </form>
                 </div>
-            </div>
-
-            <div class="modal-footer">
-                <button id="btnSeleccionarPersona" class="btn-primary" disabled>Seleccionar</button>
-                <button id="btnCancelarModal" class="btn-secondary">Cancelar</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal para gestión de solicitantes -->
+    <div id="modalSolicitantes" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>🏢 Gestión de Solicitantes</h3>
+                <span class="close" onclick="cerrarModalSolicitantes()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- Barra de búsqueda -->
+                <div class="search-section">
+                    <input type="text" id="buscarSolicitante" placeholder="🔍 Buscar por nombre, apellido, cargo o circunscripción..." class="search-input-large">
+                </div>
+                
+                <!-- Tabla de solicitantes -->
+                <div class="tabla-container">
+                    <table class="tabla-solicitantes">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Circunscripción</th>
+                                <th>Cargo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaSolicitantes">
+                            <!-- Los datos se cargarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Mensaje cuando no hay resultados -->
+                <div id="mensajeSinResultados" class="no-results" style="display: none;">
+                    <p>No se encontraron solicitantes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="gestor-solicitantes.js"></script>
     <script src="modelo/modelo.js"></script>
     <script src="modelo/modelo-personas.js"></script>
     <script src="vista/vista.js"></script>
-    <script src="vista/vista-personas.js"></script>
+    <script src="vista/vista-formulario-solicitante.js"></script>
     <script src="controlador/controlador.js"></script>
     <script src="aplicacion.js"></script>
 </body>

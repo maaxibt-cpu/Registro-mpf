@@ -1,9 +1,9 @@
 class ControladorActividades {
-    constructor(modeloActividades, vistaActividades, modeloPersonas, vistaPersonas) {
+    constructor(modeloActividades, vistaActividades, modeloPersonas, vistaFormularioSolicitante) {
         this.modeloActividades = modeloActividades;
         this.vistaActividades = vistaActividades;
         this.modeloPersonas = modeloPersonas;
-        this.vistaPersonas = vistaPersonas;
+        this.vistaFormularioSolicitante = vistaFormularioSolicitante;
         this.inicializar();
     }
 
@@ -12,6 +12,7 @@ class ControladorActividades {
         this.vistaActividades.enlazarEliminarActividad(this.manejarEliminarActividad.bind(this));
         this.vistaActividades.enlazarFiltrarActividades(this.manejarFiltrarActividades.bind(this));
         this.vistaActividades.enlazarExportarDatos(this.manejarExportarDatos.bind(this));
+        this.vistaActividades.enlazarAbrirModalSolicitantes(this.manejarAbrirModalSolicitantes.bind(this));
         
         // Cargar actividades iniciales
         this.actualizarVista();
@@ -94,17 +95,83 @@ class ControladorActividades {
     agregarPersona(datosPersona) {
         try {
             const persona = this.modeloPersonas.crearPersona(datosPersona);
-            this.vistaPersonas.renderizarPersonas(this.modeloPersonas.obtenerTodasPersonas());
-            this.vistaPersonas.mostrarNotificacion('Solicitante agregado correctamente', 'success');
+            // Mostrar notificación usando la vista de actividades
+            this.vistaActividades.mostrarNotificacion('Solicitante agregado correctamente', 'success');
+            
+            // Actualizar la lista de solicitantes en el modal de búsqueda si está abierto
+            if (window.gestorSolicitantes) {
+                window.gestorSolicitantes.cargarSolicitantes();
+            }
+            
             return persona;
         } catch (error) {
-            this.vistaPersonas.mostrarNotificacion('Error al agregar solicitante', 'error');
+            this.vistaActividades.mostrarNotificacion('Error al agregar solicitante', 'error');
             console.error('Error:', error);
         }
     }
 
     seleccionarPersona(persona) {
-        this.vistaPersonas.actualizarCampoSolicitante(persona);
-        this.vistaPersonas.mostrarNotificacion('Solicitante seleccionado: ' + persona.nombre + ' ' + persona.apellido, 'info');
+        // Actualizar campo de solicitante en la vista de actividades
+        this.vistaActividades.actualizarCampoSolicitante(persona);
+        this.vistaActividades.mostrarNotificacion('Solicitante seleccionado: ' + persona.nombre + ' ' + persona.apellido, 'info');
+    }
+
+    manejarAbrirModalSolicitantes() {
+        // Abrir el modal de búsqueda de solicitantes
+        if (typeof abrirModalSolicitantes === 'function') {
+            abrirModalSolicitantes();
+        }
+    }
+
+    cargarSolicitantes() {
+        // Cargar lista de solicitantes en el nuevo modal
+        const personas = this.modeloPersonas.obtenerTodasPersonas();
+        this.renderizarListaSolicitantes(personas);
+        this.enlazarBusquedaSolicitantes();
+    }
+
+    renderizarListaSolicitantes(personas) {
+        const tabla = document.getElementById('tablaSolicitantes');
+        if (!tabla) return;
+
+        if (personas.length === 0) {
+            tabla.innerHTML = '<tr><td colspan="5" class="no-results">No hay solicitantes registrados</td></tr>';
+            return;
+        }
+
+        tabla.innerHTML = personas.map(persona => `
+            <tr class="persona-fila" data-id="${persona.id}">
+                <td>${persona.nombre}</td>
+                <td>${persona.apellido}</td>
+                <td>${persona.circunscripcion}</td>
+                <td>${persona.cargo}</td>
+                <td>
+                    <button class="btn-seleccionar-tabla" onclick="seleccionarSolicitante(${persona.id})">Seleccionar</button>
+                    <button class="btn-editar" onclick="editarSolicitante(${persona.id})" title="Editar">✏️</button>
+                    <button class="btn-eliminar" onclick="eliminarSolicitante(${persona.id})" title="Eliminar">🗑️</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    enlazarBusquedaSolicitantes() {
+        const busquedaInput = document.getElementById('busquedaSolicitantes');
+        if (busquedaInput) {
+            busquedaInput.addEventListener('input', (e) => {
+                const termino = e.target.value.toLowerCase();
+                this.filtrarSolicitantes(termino);
+            });
+        }
+    }
+
+    filtrarSolicitantes(termino) {
+        const personas = this.modeloPersonas.obtenerTodasPersonas();
+        const filtradas = personas.filter(persona => 
+            persona.nombre.toLowerCase().includes(termino) ||
+            persona.apellido.toLowerCase().includes(termino) ||
+            persona.circunscripcion.toLowerCase().includes(termino) ||
+            persona.cargo.toLowerCase().includes(termino)
+        );
+        this.renderizarListaSolicitantes(filtradas);
     }
 }

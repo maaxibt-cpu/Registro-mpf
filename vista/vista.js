@@ -65,6 +65,12 @@ class VistaActividades {
         });
     }
 
+    enlazarAbrirModalSolicitantes(manejador) {
+        document.getElementById('btnSolicitantes').addEventListener('click', () => {
+            manejador();
+        });
+    }
+
     validarFormulario(datos) {
         if (!datos.fecha || !datos.tecnico || !datos.tipo || !datos.descripcion || !datos.estado) {
             this.mostrarNotificacion('Por favor complete todos los campos', 'error');
@@ -137,5 +143,16 @@ class VistaActividades {
                 notificacion.parentNode.removeChild(notificacion);
             }
         }, 3000);
+    }
+
+    actualizarCampoSolicitante(persona) {
+        // Actualizar el campo de solicitante en el formulario
+        const solicitanteInput = document.getElementById('solicitante');
+        const solicitanteIdInput = document.getElementById('solicitanteId');
+        
+        if (solicitanteInput && solicitanteIdInput) {
+            solicitanteInput.value = `${persona.nombre} ${persona.apellido}`;
+            solicitanteIdInput.value = persona.id;
+        }
     }
 }
