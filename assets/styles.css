@@ -7,15 +7,19 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0c1e25 0%, #1a2b35 100%);
-    color: #e0e0e0;
+    color: #ffffff !important;
     line-height: 1.6;
     min-height: 100vh;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: none;
+    width: 95%;
     margin: 0 auto;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 header {
@@ -23,11 +27,14 @@ header {
     margin-bottom: 40px;
     background: linear-gradient(135deg, #008399 0%, #005a6e 100%);
     color: white;
-    padding: 30px 40px 25px 140px;
+    padding: 30px 20px 25px 140px;
     border-radius: 12px;
     box-shadow: 0 6px 25px rgba(0, 131, 153, 0.3);
     position: relative;
     border: 1px solid rgba(0, 131, 153, 0.3);
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
 }
 
 .header-logo {
@@ -60,14 +67,21 @@ header p {
 }
 
 main {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 30px;
-    margin-bottom: 0%;
-    padding-bottom: 5px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    flex: 1;
+    align-items: flex-start;
+    min-height: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
-.form-section, .list-section {
+.form-section {
     background: rgba(45, 45, 45, 0.95);
     padding: 30px;
     border-radius: 12px;
@@ -75,6 +89,26 @@ main {
     border: 1px solid rgba(0, 131, 153, 0.2);
     backdrop-filter: blur(10px);
     border-left: 4px solid #008399;
+    min-height: auto;
+    height: fit-content;
+    flex: 0 0 380px;
+}
+
+.list-section {
+    background: rgba(45, 45, 45, 0.95);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 131, 153, 0.2);
+    backdrop-filter: blur(10px);
+    border-left: 4px solid #008399;
+    min-height: 0;
+    height: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    min-width: 0;
 }
 
 .form-section h2, .list-section h2 {
@@ -223,19 +257,43 @@ button[type="submit"]:active {
     justify-content: center;
     margin: 20px 0 30px 0;
     padding: 0 20px;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
 }
 
-.header-actions .btn-solicitantes {
+.header-actions .btn-solicitantes,
+.header-actions .btn-export {
     padding: 16px 30px;
     font-size: 16px;
     border-radius: 10px;
-    box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4);
     transition: all 0.3s ease;
+    margin: 0 10px;
+}
+
+.header-actions .btn-solicitantes {
+    box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4);
+}
+
+.header-actions .btn-export {
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+    border: none;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+}
+
+.header-actions .btn-solicitantes:hover,
+.header-actions .btn-export:hover {
+    transform: translateY(-3px);
 }
 
 .header-actions .btn-solicitantes:hover {
-    transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(155, 89, 182, 0.5);
+}
+
+.header-actions .btn-export:hover {
+    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5);
 }
 
 .filters input::placeholder {
@@ -244,39 +302,52 @@ button[type="submit"]:active {
 }
 
 .activities-list {
-    display: grid;
-    gap: 15px;
+    background: #1e1e1e;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #2a2a2a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: calc(100vh - 250px);
 }
 
 .activity-card {
-    background: rgba(45, 45, 45, 0.9);
-    padding: 20px;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+    padding: 24px;
+    border-radius: 8px;
     border-left: 4px solid #008399;
     transition: all 0.3s ease;
-    border: 1px solid rgba(0, 131, 153, 0.2);
-    backdrop-filter: blur(5px);
-    margin-bottom: 15px;
+    border: 1px solid #404040;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .activity-card:hover {
-    transform: translateX(5px);
-    background: rgba(61, 61, 61, 0.95);
-    box-shadow: 0 6px 20px rgba(0, 131, 153, 0.25);
-    border-color: rgba(0, 131, 153, 0.4);
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #2d2d2d 0%, #222222 100%);
+    box-shadow: 0 4px 12px rgba(0, 131, 153, 0.15);
+    border-color: #008399;
 }
 
 .activity-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #404040;
 }
 
 .activity-title {
-    font-size: 1.2em;
+    font-size: 1.3em;
     font-weight: 600;
     color: #008399;
+    letter-spacing: 0.5px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .activity-date {
@@ -286,18 +357,23 @@ button[type="submit"]:active {
 
 .activity-meta {
     display: flex;
-    gap: 15px;
-    margin-bottom: 10px;
+    gap: 12px;
+    margin-bottom: 16px;
     flex-wrap: wrap;
+    background: #1a1a1a;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #2a2a2a;
 }
 
 .activity-meta span {
-    background: #1a1a1a;
-    padding: 4px 12px;
-    border-radius: 20px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+    padding: 6px 14px;
+    border-radius: 4px;
     font-size: 0.9em;
     font-weight: 500;
     border: 1px solid #404040;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .activity-description {
@@ -383,6 +459,271 @@ button[type="submit"]:active {
         flex-direction: column;
         gap: 5px;
     }
+}
+
+/* Estilos para tabla de actividades compacta */
+.tabla-actividades-container {
+    overflow-x: auto;
+    flex: 1;
+    min-height: 0;
+    height: auto;
+    max-height: none;
+    border-radius: 8px;
+    border: 1px solid #404040;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: #1a1a1a;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabla-actividades {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #1a1a1a;
+    font-size: 0.9em;
+}
+
+.tabla-actividades th {
+    background: linear-gradient(135deg, #008399 0%, #006680 100%);
+    color: white;
+    padding: 14px 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95em;
+    border-bottom: 2px solid #008399;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tabla-actividades th:first-child {
+    border-top-left-radius: 6px;
+}
+
+.tabla-actividades th:last-child {
+    border-top-right-radius: 6px;
+}
+
+.tabla-actividades td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #333;
+    color: #e0e0e0;
+    transition: background-color 0.2s ease;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tabla-actividades tr.fila-actividad:hover td {
+    background: #2d2d2d;
+}
+
+.tabla-actividades .solicitante {
+    font-weight: 500;
+    min-width: 140px;
+    color: #ffffff;
+}
+
+.tabla-actividades .circunscripcion {
+    min-width: 120px;
+    color: #cccccc;
+}
+
+.tabla-actividades .cargo {
+    min-width: 100px;
+    color: #bbbbbb;
+}
+
+.tabla-actividades .tecnico {
+    min-width: 120px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.tabla-actividades .fecha {
+    min-width: 100px;
+    color: #999999;
+    font-family: 'Courier New', monospace;
+}
+
+.tabla-actividades .tipo {
+    min-width: 120px;
+}
+
+.tabla-actividades .estado {
+    min-width: 100px;
+}
+
+.tabla-actividades .acciones {
+    text-align: center;
+    vertical-align: middle;
+    min-width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+}
+
+.badge-tipo {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.badge-tipo.mantenimiento {
+    background: #4CAF50;
+    color: white;
+}
+
+.badge-tipo.reparacion {
+    background: #FF9800;
+    color: white;
+}
+
+.badge-tipo.instalacion {
+    background: #2196F3;
+    color: white;
+}
+
+.badge-tipo.soporte {
+    background: #9C27B0;
+    color: white;
+}
+
+.badge-tipo.otro {
+    background: #607D8B;
+    color: white;
+}
+
+.badge-estado {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.badge-estado.pendiente {
+    background: #FF5722;
+    color: white;
+}
+
+.badge-estado.en-proceso {
+    background: #FFC107;
+    color: #333;
+}
+
+.badge-estado.completado {
+    background: #4CAF50;
+    color: white;
+}
+
+.badge-estado.cancelado {
+    background: #9E9E9E;
+    color: white;
+}
+
+.btn-editar-tabla {
+    background: linear-gradient(135deg, #0088cc 0%, #0066aa 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-right: 8px;
+    min-width: 50px;
+    box-shadow: 0 2px 8px rgba(0, 136, 204, 0.2);
+    border: 2px solid transparent;
+    line-height: 1;
+}
+
+.btn-editar-tabla:hover {
+    background: linear-gradient(135deg, #0066aa 0%, #005588 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-eliminar-tabla {
+    background: linear-gradient(135deg, #ff4444 0%, #cc3333 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    min-width: 50px;
+    box-shadow: 0 2px 8px rgba(255, 68, 68, 0.2);
+    border: 2px solid transparent;
+    line-height: 1;
+}
+
+.btn-eliminar-tabla:hover {
+    background: rgba(255, 68, 68, 0.15);
+    transform: scale(1.1);
+}
+
+/* Estilos para botones de acción en tabla */
+.btn-guardar-tabla {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-right: 8px;
+    min-width: 50px;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+    border: 2px solid transparent;
+    line-height: 1;
+}
+
+.btn-guardar-tabla:hover {
+    background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-cancelar-tabla {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    min-width: 50px;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
+    border: 2px solid transparent;
+    line-height: 1;
+}
+
+.btn-cancelar-tabla:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-accion-grupo {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
 }
 
 /* Estilos para gestión de personas */
@@ -584,8 +925,9 @@ button[type="submit"]:active {
 
 .modal-body {
     padding: 30px;
-    max-height: 60vh;
+    max-height: 70vh;
     overflow-y: auto;
+}
     background: #1e1e1e;
 }
 
@@ -905,6 +1247,62 @@ select option {
     color: #e0e0e0;
 }
 
+/* ===== ESTILOS PARA MODAL DE CONFIRMACIÓN ===== */
+
+.texto-advertencia {
+    color: #ff6b6b;
+    font-size: 0.9em;
+    font-weight: 500;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.modal-body p {
+    text-align: center;
+    margin: 0 0 15px 0;
+    font-size: 1.1em;
+    line-height: 1.5;
+    color: #e0e0e0;
+}
+
+.btn-cancelar {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.btn-cancelar:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(108, 117, 125, 0.4);
+}
+
+.btn-confirmar {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.btn-confirmar:hover {
+    background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(220, 53, 69, 0.5);
+}
+
 .btn-secondary:hover {
     background: #555;
 }
@@ -946,47 +1344,6 @@ select option {
 }
 
 /* Estilos para tabla de solicitantes */
-.tabla-container {
-    margin-top: 20px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #404040;
-    background: #2a2a2a;
-}
-
-.tabla-solicitantes {
-    width: 100%;
-    border-collapse: collapse;
-    background: #2a2a2a;
-}
-
-.tabla-solicitantes th {
-    background: linear-gradient(135deg, #008399 0%, #006680 100%);
-    color: white;
-    padding: 16px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #008399;
-}
-
-.tabla-solicitantes td {
-    padding: 16px;
-    border-bottom: 1px solid #404040;
-    color: #e0e0e0;
-    font-size: 14px;
-}
-
-.tabla-solicitantes tr:last-child td {
-    border-bottom: none;
-}
-
-.tabla-solicitantes tr:hover {
-    background: rgba(0, 131, 153, 0.1);
-}
-
 .persona-fila {
     transition: background-color 0.2s ease;
 }
@@ -1022,12 +1379,12 @@ select option {
 /* Estilos para botones de editar y eliminar */
 .btn-editar, .btn-eliminar {
     border: none;
-    padding: 8px 12px;
+    padding: 6px 10px;
     border-radius: 6px;
+    font-size: 13px;
     cursor: pointer;
-    font-size: 16px;
     transition: all 0.2s ease;
-    margin-left: 8px;
+    margin-left: 4px;
 }
 
 .btn-editar {
@@ -1172,8 +1529,10 @@ select option {
 /* ===== ESTILOS MEJORADOS PARA MODAL DE SOLICITANTES ===== */
 
 .modal-large {
-    max-width: 800px !important;
+    max-width: 1000px !important;
+    width: 90vw;
     margin: 2% auto;
+    max-height: 85vh;
 }
 
 .search-input-large {
@@ -1212,12 +1571,14 @@ select option {
 }
 
 .tabla-container {
-    margin-top: 0;
-    border-radius: 12px;
-    overflow: hidden;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: auto;
     border: 1px solid #404040;
     background: #2a2a2a;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: fit-content;
+    max-width: 95vw;
 }
 
 .tabla-solicitantes {
@@ -1261,59 +1622,14 @@ select option {
 
 .acciones {
     display: flex;
-    gap: 8px;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.btn-editar {
-    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
-    color: #000;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(255, 193, 7, 0.2);
-    min-width: 44px;
-    display: flex;
-    align-items: center;
+    gap: 4px;
     justify-content: center;
-}
-
-.btn-editar:hover {
-    background: linear-gradient(135deg, #e0a800 0%, #c69500 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
-}
-
-.btn-eliminar {
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-    color: white;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.2);
-    min-width: 44px;
-    display: flex;
     align-items: center;
-    justify-content: center;
+    padding: 2px;
+    min-width: 120px;
 }
 
-.btn-eliminar:hover {
-    background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
-}
 
-.btn-editar:active, .btn-eliminar:active {
-    transform: translateY(0);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
 
 /* Scrollbar personalizado para la tabla */
 .tabla-container::-webkit-scrollbar {
@@ -1332,6 +1648,98 @@ select option {
 
 .tabla-container::-webkit-scrollbar-thumb:hover {
     background: #006680;
+}
+
+/* Estilos para edición en línea */
+.edit-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #008399;
+    border-radius: 4px;
+    background: #1a1a1a;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.edit-input:focus {
+    border-color: #00b3cc;
+    box-shadow: 0 0 0 2px rgba(0, 179, 204, 0.2);
+}
+
+.edit-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #008399;
+    border-radius: 4px;
+    background: #1a1a1a;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.edit-select:focus {
+    border-color: #00b3cc;
+    box-shadow: 0 0 0 2px rgba(0, 179, 204, 0.2);
+}
+
+.btn-guardar {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-right: 12px;
+    min-width: 60px;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.25);
+    border: 2px solid transparent;
+    line-height: 1;
+}
+
+.btn-guardar:hover {
+    background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-guardar:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+}
+
+.btn-cancelar {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    min-width: 60px;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
+    border: 2px solid transparent;
+    line-height: 1;
+}
+
+.btn-cancelar:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(220, 53, 69, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-cancelar:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
 }
 
 /* Animación de entrada del modal */
@@ -1369,4 +1777,122 @@ select option {
         flex-direction: column;
         gap: 6px;
     }
+}
+
+/* Modal de Confirmación */
+.modal-confirmacion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-confirmacion .modal-contenido {
+    background: linear-gradient(135deg, #1e2b32 0%, #2a3b45 100%);
+    border-radius: 12px;
+    padding: 0;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid #404040;
+    overflow: hidden;
+}
+
+.modal-confirmacion .modal-header {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-confirmacion .modal-header h3 {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.modal-confirmacion .modal-header .btn-cerrar {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+}
+
+.modal-confirmacion .modal-header .btn-cerrar:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-confirmacion .modal-body {
+    padding: 24px;
+}
+
+.modal-confirmacion .modal-body p {
+    color: #e0e0e0;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal-confirmacion .modal-acciones {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.modal-confirmacion .btn-cancelar {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 100px;
+}
+
+.modal-confirmacion .btn-cancelar:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.modal-confirmacion .btn-confirmar {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 100px;
+}
+
+.modal-confirmacion .btn-confirmar:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
 }

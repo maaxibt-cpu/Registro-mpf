@@ -37,7 +37,7 @@ class VistaActividades {
 
     enlazarEliminarActividad(manejador) {
         this.listaActividades.addEventListener('click', (e) => {
-            if (e.target.classList.contains('btn-delete')) {
+            if (e.target.classList.contains('btn-eliminar-tabla')) {
                 const id = parseInt(e.target.dataset.id);
                 manejador(id);
             }
@@ -85,26 +85,41 @@ class VistaActividades {
             return;
         }
 
-        this.listaActividades.innerHTML = actividades.map(actividad => `
-            <div class="activity-card">
-                <div class="activity-header">
-                    <h3>${actividad.nombre} ${actividad.apellido}</h3>
-                    <span class="activity-type ${actividad.tipo}">${this.obtenerEtiquetaTipo(actividad.tipo)}</span>
-                </div>
-                <div class="activity-details">
-                    <p><strong>Solicitante:</strong> ${actividad.nombre} ${actividad.apellido}</p>
-                    <p><strong>Circunscripción:</strong> ${actividad.circunscripcion}</p>
-                    <p><strong>Cargo:</strong> ${actividad.cargo}</p>
-                    <p><strong>Técnico:</strong> ${actividad.tecnico}</p>
-                    <p><strong>Fecha:</strong> ${new Date(actividad.fecha).toLocaleDateString('es-ES')}</p>
-                    <p><strong>Descripción:</strong> ${actividad.descripcion}</p>
-                    <p><strong>Estado:</strong> <span class="status ${actividad.estado}">${this.obtenerEtiquetaEstado(actividad.estado)}</span></p>
-                </div>
-                <div class="activity-actions">
-                    <button class="btn-delete" data-id="${actividad.id}">Eliminar</button>
-                </div>
+        this.listaActividades.innerHTML = `
+            <div class="tabla-actividades-container">
+                <table class="tabla-actividades">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Técnico</th>
+                            <th>Tipo</th>
+                            <th>Solicitante</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${actividades.map(actividad => `
+                            <tr class="fila-actividad" data-id="${actividad.id}">
+                                <td class="fecha">${new Date(actividad.fecha).toLocaleDateString('es-ES')}</td>
+                                <td class="tecnico">${actividad.tecnico}</td>
+                                <td class="tipo"><span class="badge-tipo ${actividad.tipo}">${this.obtenerEtiquetaTipo(actividad.tipo)}</span></td>
+                                <td class="solicitante">${actividad.nombre} ${actividad.apellido}</td>
+                                <td class="descripcion">${actividad.descripcion || 'Sin descripción'}</td>
+                                <td class="estado"><span class="badge-estado ${actividad.estado}">${this.obtenerEtiquetaEstado(actividad.estado)}</span></td>
+                                <td class="acciones">
+                                    <div class="btn-accion-grupo">
+                                        <button class="btn-editar-tabla" onclick="iniciarEdicionActividadGlobal(${actividad.id})" title="Editar actividad">✏️</button>
+                                        <button class="btn-eliminar-tabla" data-id="${actividad.id}" title="Eliminar actividad">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
             </div>
-        `).join('');
+        `;
     }
 
     obtenerEtiquetaTipo(tipo) {

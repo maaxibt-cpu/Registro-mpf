@@ -21,6 +21,31 @@ class ModeloActividades {
         return this.actividades;
     }
 
+    // Obtener actividad por ID
+    obtenerActividadPorId(id) {
+        return this.actividades.find(actividad => actividad.id === id);
+    }
+
+    // Actualizar actividad
+    actualizarActividad(id, datosActualizados) {
+        const index = this.actividades.findIndex(actividad => actividad.id === id);
+        if (index === -1) {
+            console.error('Actividad no encontrada para actualizar:', id);
+            return false;
+        }
+        
+        // Mantener el ID original y timestamp de creación
+        this.actividades[index] = {
+            ...this.actividades[index],
+            ...datosActualizados,
+            id: id, // Mantener el ID original
+            timestamp: this.actividades[index].timestamp // Mantener timestamp de creación
+        };
+        
+        this.guardarActividades();
+        return true;
+    }
+
     // Eliminar actividad
     eliminarActividad(id) {
         this.actividades = this.actividades.filter(actividad => actividad.id !== id);
@@ -48,9 +73,9 @@ class ModeloActividades {
         });
     }
 
-    // Exportar datos
-    exportarDatos() {
-        return JSON.stringify(this.actividades, null, 2);
+    // Obtener datos para exportar (formato array)
+    obtenerDatosParaExportar() {
+        return this.actividades;
     }
 
     // Cargar actividades desde localStorage

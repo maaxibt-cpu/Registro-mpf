@@ -96,68 +96,46 @@ class GestorSolicitantes {
         this.mensajeSinResultados.style.display = 'none';
         
         this.tablaBody.innerHTML = personas.map(persona => `
-            <tr class="fila-solicitante">
+            <tr class="fila-solicitante" data-id="${persona.id}">
                 <td>${this.escapeHtml(persona.nombre)}</td>
                 <td>${this.escapeHtml(persona.apellido)}</td>
                 <td>${this.escapeHtml(persona.circunscripcion)}</td>
                 <td>${this.escapeHtml(persona.cargo)}</td>
                 <td class="acciones">
-                    <button class="btn-editar" onclick="gestorSolicitantes.editarSolicitante(${persona.id})" title="Editar solicitante">✏️</button>
+                    <button class="btn-editar" onclick="iniciarEdicionSolicitanteGlobal(${persona.id})" title="Editar solicitante">✏️</button>
                     <button class="btn-eliminar" onclick="gestorSolicitantes.eliminarSolicitante(${persona.id})" title="Eliminar solicitante">🗑️</button>
                 </td>
             </tr>
         `).join('');
     }
 
-    editarSolicitante(id) {
-        const personas = this.obtenerTodasPersonas();
-        const persona = personas.find(p => p.id === id);
-        
-        if (persona) {
-            // Cerrar este modal y abrir el modal de formulario
-            this.cerrarModal();
-            
-            // Usar la vista de formulario de solicitante para editar
-            if (window.aplicacion && window.aplicacion.vistaFormularioSolicitante) {
-                window.aplicacion.vistaFormularioSolicitante.toggleModal(true);
-                
-                // Llenar formulario con datos existentes
-                document.getElementById('nuevaPersonaNombre').value = persona.nombre;
-                document.getElementById('nuevaPersonaApellido').value = persona.apellido;
-                document.getElementById('nuevaPersonaCircunscripcion').value = persona.circunscripcion;
-                document.getElementById('nuevaPersonaCargo').value = persona.cargo;
-                
-                // Guardar ID para actualización en el controlador
-                if (window.aplicacion && window.aplicacion.controlador) {
-                    window.aplicacion.controlador.personaEditando = persona.id;
-                }
-                
-                this.mostrarNotificacion(`Editando: ${persona.nombre} ${persona.apellido}`, 'info');
-            }
-        }
-    }
-
     eliminarSolicitante(id) {
-        const personas = this.obtenerTodasPersonas();
-        const persona = personas.find(p => p.id === id);
-        
-        if (persona && confirm(`¿Está seguro de eliminar al solicitante: ${persona.nombre} ${persona.apellido}?`)) {
-            try {
-                // Usar el modelo principal si está disponible
-                if (window.aplicacion && window.aplicacion.controlador && window.aplicacion.controlador.modeloPersonas) {
-                    window.aplicacion.controlador.modeloPersonas.eliminarPersona(id);
-                } else {
-                    // Fallback: eliminar directamente de localStorage
-                    const nuevasPersonas = personas.filter(p => p.id !== id);
-                    localStorage.setItem('personas', JSON.stringify(nuevasPersonas));
+        // Usar el nuevo modal de confirmación global
+        if (typeof mostrarModalConfirmacion === 'function') {
+            mostrarModalConfirmacion(id);
+        } else {
+            // Fallback al método antiguo si el modal no está disponible
+            const personas = this.obtenerTodasPersonas();
+            const persona = personas.find(p => p.id === id);
+            
+            if (persona && confirm(`¿Está seguro de eliminar al solicitante: ${persona.nombre} ${persona.apellido}?`)) {
+                try {
+                    // Usar el modelo principal si está disponible
+                    if (window.aplicacion && window.aplicacion.controlador && window.aplicacion.controlador.modeloPersonas) {
+                        window.aplicacion.controlador.modeloPersonas.eliminarPersona(id);
+                    } else {
+                        // Fallback: eliminar directamente de localStorage
+                        const nuevasPersonas = personas.filter(p => p.id !== id);
+                        localStorage.setItem('personas', JSON.stringify(nuevasPersonas));
+                    }
+                    
+                    this.cargarSolicitantes();
+                    this.mostrarNotificacion('Solicitante eliminado correctamente', 'success');
+                    
+                } catch (error) {
+                    console.error('Error al eliminar solicitante:', error);
+                    this.mostrarNotificacion('Error al eliminar solicitante', 'error');
                 }
-                
-                this.cargarSolicitantes();
-                this.mostrarNotificacion('Solicitante eliminado correctamente', 'success');
-                
-            } catch (error) {
-                console.error('Error al eliminar solicitante:', error);
-                this.mostrarNotificacion('Error al eliminar solicitante', 'error');
             }
         }
     }

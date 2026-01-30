@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Actividades Técnicas</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="assets/styles.css?v=32">
 </head>
 <body>
     <div class="container">
@@ -16,6 +16,7 @@
 
         <div class="header-actions">
             <button type="button" id="btnSolicitantes" class="btn-solicitantes" onclick="abrirModalSolicitantes()">👥 Solicitantes</button>
+            <button type="button" id="exportBtn" class="btn-export" onclick="event.preventDefault(); event.stopPropagation();">📥 Exportar Datos</button>
         </div>
 
         <main>
@@ -109,10 +110,6 @@
         </main>
     </div>
 
-    <div class="export-container">
-        <button type="button" id="exportBtn" class="btn-export">📥 Exportar Datos</button>
-    </div>
-
     <!-- Modal para gestión de personas (Solo formulario de nuevo solicitante) -->
     <div id="modalPersonas" class="modal">
         <div class="modal-content">
@@ -193,6 +190,28 @@
         </div>
     </div>
 
+    <!-- Modal de confirmación para eliminar actividades -->
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠️ Confirmar Eliminación</h3>
+                <span class="close" onclick="cerrarModalConfirmacion()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro de que desea eliminar esta actividad?</p>
+                <p class="texto-advertencia">Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancelar" onclick="cerrarModalConfirmacion()">Cancelar</button>
+                <button type="button" class="btn-confirmar" onclick="confirmarEliminacion()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    
     <script src="gestor-solicitantes.js"></script>
     <script src="modelo/modelo.js"></script>
     <script src="modelo/modelo-personas.js"></script>
@@ -200,5 +219,98 @@
     <script src="vista/vista-formulario-solicitante.js"></script>
     <script src="controlador/controlador.js"></script>
     <script src="aplicacion.js"></script>
+    
+    <!-- Modal de Confirmación -->
+
+    <!-- Modal de Edición de Actividades -->
+    <div id="modalEdicionActividad" class="modal" style="display: none;">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>✏️ Editar Actividad</h3>
+                <span class="close" onclick="cerrarModalEdicionActividad()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formEdicionActividad">
+                    <input type="hidden" id="edicionActividadId">
+                    
+                    <div class="form-group">
+                        <label for="edicionFecha">Fecha:</label>
+                        <input type="date" id="edicionFecha" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edicionTecnico">Técnico:</label>
+                        <select id="edicionTecnico" required>
+                            <option value="">Seleccione el técnico</option>
+                            <option value="Carlos Beres">Carlos Beres</option>
+                            <option value="Santiago Somerville">Santiago Somerville</option>
+                            <option value="Omar Vallejos">Omar Vallejos</option>
+                            <option value="Maximiliano Burela Tello">Maximiliano Burela Tello</option>
+                            <option value="Ricardo Cuello">Ricardo Cuello</option>
+                            <option value="Jorge Olmedo">Jorge Olmedo</option>
+                            <option value="Lucas Vega">Lucas Vega</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edicionTipo">Tipo de Actividad:</label>
+                        <select id="edicionTipo" required>
+                            <option value="">Seleccione el tipo</option>
+                            <option value="mantenimiento">Mantenimiento</option>
+                            <option value="reparacion">Reparación</option>
+                            <option value="instalacion">Instalación</option>
+                            <option value="soporte">Soporte Técnico</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edicionSolicitante">Solicitante:</label>
+                        <div class="solicitante-input-group">
+                            <input type="text" id="edicionSolicitante" placeholder="Solicitante" readonly>
+                            <input type="hidden" id="edicionSolicitanteId">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edicionDescripcion">Descripción:</label>
+                        <textarea id="edicionDescripcion" placeholder="Describa la actividad realizada..." rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edicionEstado">Estado:</label>
+                        <select id="edicionEstado" required>
+                            <option value="">Seleccione estado</option>
+                            <option value="completado">Completado</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en-proceso">En proceso</option>
+                            <option value="cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancelar" onclick="cerrarModalEdicionActividad()">Cancelar</button>
+                        <button type="submit" class="btn-guardar">💾 Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalConfirmacion" class="modal-confirmacion" style="display: none;">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h3>Confirmar Eliminación</h3>
+                <button class="btn-cerrar" onclick="cerrarModalConfirmacion()">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="mensajeConfirmacion">¿Está seguro de eliminar al solicitante?</p>
+                <div class="modal-acciones">
+                    <button class="btn-cancelar" onclick="cerrarModalConfirmacion()">Cancelar</button>
+                    <button class="btn-confirmar" onclick="confirmarEliminacion()">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
