@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Actividades Técnicas</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <img src="logo.png" alt="Logo MPF La Rioja" class="header-logo">
+            <img src="assets/logo.png" alt="Logo MPF La Rioja" class="header-logo">
             <h1>Registro de Actividades Técnicas</h1>
-            <p>Sistema de seguimiento de actividades del área técnica</p>
+            <p>Ministerio Público Fiscal - La Rioja</p>
         </header>
 
         <main>
@@ -25,7 +25,16 @@
                     
                     <div class="form-group">
                         <label for="tecnico">Técnico:</label>
-                        <input type="text" id="tecnico" placeholder="Nombre del técnico" required>
+                        <select id="tecnico" required>
+                            <option value="">Seleccione el técnico</option>
+                            <option value="Carlos Beres">Carlos Beres</option>
+                            <option value="Santiago Somerville">Santiago Somerville</option>
+                            <option value="Omar Vallejos">Omar Vallejos</option>
+                            <option value="Maximiliano Burela Tello">Maximiliano Burela Tello</option>
+                            <option value="Ricardo Cuello">Ricardo Cuello</option>
+                            <option value="Jorge Olmedo">Jorge Olmedo</option>
+                            <option value="Lucas Vega">Lucas Vega</option>
+                        </select>
                     </div>
                     
                     <div class="form-group">
@@ -41,8 +50,13 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="equipo">Equipo/Sistema:</label>
-                        <input type="text" id="equipo" placeholder="Nombre del equipo o sistema" required>
+                        <label for="solicitante">Solicitante:</label>
+                        <div class="solicitante-input-group">
+                            <input type="text" id="solicitante" placeholder="Escriba para buscar solicitantes..." required>
+                            <input type="hidden" id="solicitanteId">
+                            <button type="button" id="abrirModalPersonas" class="btn-seleccionar-persona">📋</button>
+                            <div id="sugerenciasSolicitante" class="sugerencias-container"></div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -91,9 +105,76 @@
         </main>
     </div>
 
-    <script src="model.js"></script>
-    <script src="view.js"></script>
-    <script src="controller.js"></script>
-    <script src="script.js"></script>
+    <div class="export-container">
+        <button type="button" id="exportBtn" class="btn-export">📥 Exportar Datos</button>
+    </div>
+
+    <!-- Modal para gestión de personas -->
+    <div id="modalPersonas" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Gestión de Solicitantes</h2>
+                <button id="btnCerrarModal" class="btn-cerrar">×</button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Búsqueda -->
+                <div class="search-section">
+                    <input type="text" id="busquedaPersonas" placeholder="Buscar solicitantes..." class="search-input">
+                </div>
+
+                <!-- Lista de personas -->
+                <div id="listaPersonas" class="personas-list">
+                    <!-- Las personas se cargarán aquí -->
+                </div>
+
+                <!-- Controles de paginación -->
+                <div class="pagination-controls">
+                    <div id="controlesPaginacion" class="pagination-buttons"></div>
+                    <div id="infoPaginacion" class="pagination-info"></div>
+                </div>
+
+                <!-- Formulario para nueva persona -->
+                <div class="new-person-section">
+                    <h3>Agregar Nuevo Solicitante</h3>
+                    <form id="formularioPersona">
+                        <div class="form-row">
+                            <input type="text" id="nuevaPersonaNombre" placeholder="Nombre" required>
+                            <input type="text" id="nuevaPersonaApellido" placeholder="Apellido" required>
+                        </div>
+                        <div class="form-row">
+                            <select id="nuevaPersonaCircunscripcion" required>
+                                <option value="">Seleccione circunscripción</option>
+                                <option value="Primera Circunscripción Capital">Primera Circunscripción Capital</option>
+                                <option value="Segunda Circunscripción Chilecito">Segunda Circunscripción Chilecito</option>
+                                <option value="Tercera Circunscripción Chamical">Tercera Circunscripción Chamical</option>
+                                <option value="Cuarta Circunscripción Aimogasta">Cuarta Circunscripción Aimogasta</option>
+                                <option value="Quinta Circunscripción Chepes">Quinta Circunscripción Chepes</option>
+                                <option value="Sexta Circunscripción Villa Unión">Sexta Circunscripción Villa Unión</option>
+                            </select>
+                            <select id="nuevaPersonaCargo" required>
+                                <option value="">Seleccione cargo</option>
+                                <option value="Operador">Operador</option>
+                                <option value="Fiscal">Fiscal</option>
+                            </select>
+                        </div>
+                        <button type="submit">Agregar Solicitante</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btnSeleccionarPersona" class="btn-primary" disabled>Seleccionar</button>
+                <button id="btnCancelarModal" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="modelo/modelo.js"></script>
+    <script src="modelo/modelo-personas.js"></script>
+    <script src="vista/vista.js"></script>
+    <script src="vista/vista-personas.js"></script>
+    <script src="controlador/controlador.js"></script>
+    <script src="aplicacion.js"></script>
 </body>
 </html>
