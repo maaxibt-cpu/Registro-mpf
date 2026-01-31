@@ -43,7 +43,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="tipo">Tipo de Actividad:</label>
+                        <label for="tipo">Tipo de Problema:</label>
                         <select id="tipo" required>
                             <option value="">Seleccione el tipo</option>
                             <option value="mantenimiento">Mantenimiento</option>
@@ -75,7 +75,6 @@
                             <option value="">Seleccione estado</option>
                             <option value="completado">Completado</option>
                             <option value="pendiente">Pendiente</option>
-                            <option value="en-progreso">En progreso</option>
                         </select>
                     </div>
                     
@@ -99,7 +98,6 @@
                         <option value="">Todos los estados</option>
                         <option value="completado">Completado</option>
                         <option value="pendiente">Pendiente</option>
-                        <option value="en-progreso">En progreso</option>
                     </select>
                 </div>
                 
@@ -190,23 +188,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmación para eliminar actividades -->
-    <div id="modalConfirmacion" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>⚠️ Confirmar Eliminación</h3>
-                <span class="close" onclick="cerrarModalConfirmacion()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p>¿Está seguro de que desea eliminar esta actividad?</p>
-                <p class="texto-advertencia">Esta acción no se puede deshacer.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-cancelar" onclick="cerrarModalConfirmacion()">Cancelar</button>
-                <button type="button" class="btn-confirmar" onclick="confirmarEliminacion()">Eliminar</button>
-            </div>
-        </div>
-    </div>
+
 
     <!-- jsPDF library for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -253,7 +235,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="edicionTipo">Tipo de Actividad:</label>
+                        <label for="edicionTipo">Tipo de Problema:</label>
                         <select id="edicionTipo" required>
                             <option value="">Seleccione el tipo</option>
                             <option value="mantenimiento">Mantenimiento</option>
@@ -297,20 +279,24 @@
         </div>
     </div>
 
-    <div id="modalConfirmacion" class="modal-confirmacion" style="display: none;">
-        <div class="modal-contenido">
+    <!-- Modal de confirmación genérico para eliminar -->
+    <div id="modalConfirmacion" class="modal modal-confirmacion" style="display: none;">
+        <div class="modal-content">
             <div class="modal-header">
-                <h3>Confirmar Eliminación</h3>
-                <button class="btn-cerrar" onclick="cerrarModalConfirmacion()">×</button>
+                <h3 id="modalConfirmacionTitulo">⚠️ Confirmar Eliminación</h3>
+                <button class="btn-cerrar" onclick="cerrarModalConfirmacion()">&times;</button>
             </div>
             <div class="modal-body">
-                <p id="mensajeConfirmacion">¿Está seguro de eliminar al solicitante?</p>
-                <div class="modal-acciones">
-                    <button class="btn-cancelar" onclick="cerrarModalConfirmacion()">Cancelar</button>
-                    <button class="btn-confirmar" onclick="confirmarEliminacion()">Eliminar</button>
-                </div>
+                <p id="modalConfirmacionMensaje">¿Está seguro de que desea eliminar este elemento?</p>
+                <p class="texto-advertencia">Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancelar" onclick="cerrarModalConfirmacion()">Cancelar</button>
+                <button type="button" class="btn-confirmar" onclick="confirmarEliminacion()">Eliminar</button>
             </div>
         </div>
     </div>
+
+
 </body>
 </html>

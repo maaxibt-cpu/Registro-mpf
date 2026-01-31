@@ -92,8 +92,9 @@ class VistaActividades {
                         <tr>
                             <th>Fecha</th>
                             <th>Técnico</th>
-                            <th>Tipo</th>
+                            <th>Tipo de Problema</th>
                             <th>Solicitante</th>
+                            <th>Circunscripción</th>
                             <th>Descripción</th>
                             <th>Estado</th>
                             <th>Acciones</th>
@@ -104,8 +105,9 @@ class VistaActividades {
                             <tr class="fila-actividad" data-id="${actividad.id}">
                                 <td class="fecha">${new Date(actividad.fecha).toLocaleDateString('es-ES')}</td>
                                 <td class="tecnico">${actividad.tecnico}</td>
-                                <td class="tipo"><span class="badge-tipo ${actividad.tipo}">${this.obtenerEtiquetaTipo(actividad.tipo)}</span></td>
+                                <td class="tipo">${this.obtenerEtiquetaTipo(actividad.tipo)}</td>
                                 <td class="solicitante">${actividad.nombre} ${actividad.apellido}</td>
+                                <td class="circunscripcion">${actividad.circunscripcion || 'N/A'}</td>
                                 <td class="descripcion">${actividad.descripcion || 'Sin descripción'}</td>
                                 <td class="estado"><span class="badge-estado ${actividad.estado}">${this.obtenerEtiquetaEstado(actividad.estado)}</span></td>
                                 <td class="acciones">

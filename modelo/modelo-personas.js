@@ -66,6 +66,21 @@ class ModeloPersonas {
         return this.personas.find(persona => persona.id === id);
     }
 
+    // Actualizar persona
+    actualizarPersona(id, datosActualizados) {
+        const index = this.personas.findIndex(persona => persona.id === id);
+        if (index === -1) return null;
+        
+        this.personas[index] = {
+            ...this.personas[index],
+            ...datosActualizados,
+            timestamp: new Date().toISOString() // Actualizar timestamp
+        };
+        
+        this.guardarPersonas();
+        return this.personas[index];
+    }
+
     // Eliminar persona
     eliminarPersona(id) {
         this.personas = this.personas.filter(persona => persona.id !== id);

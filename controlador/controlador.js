@@ -83,8 +83,10 @@ class ControladorActividades {
         
         // Reemplazar botones por botones de guardar/cancelar
         celdas[4].innerHTML = `
-            <button class="btn-guardar" onclick="guardarEdicionSolicitanteGlobal(${id})" title="Guardar">💾</button>
-            <button class="btn-cancelar" onclick="cancelarEdicionSolicitanteGlobal(${id})" title="Cancelar">❌</button>
+            <div class="btn-accion-grupo">
+                <button class="btn-guardar-tabla" onclick="guardarEdicionSolicitanteGlobal(${id})" title="Guardar cambios">💾</button>
+                <button class="btn-cancelar-tabla" onclick="cancelarEdicionSolicitanteGlobal(${id})" title="Cancelar edición">❌</button>
+            </div>
         `;
         
         // Enfocar el primer campo
@@ -111,29 +113,46 @@ class ControladorActividades {
             return;
         }
 
+        // Obtener datos originales para comparar
+        const personaOriginal = this.modeloPersonas.obtenerPersonaPorId(id);
+        if (!personaOriginal) return;
+
+        // Verificar si realmente hubo cambios
+        const cambiosDetectados = 
+            datosEditados.nombre !== personaOriginal.nombre ||
+            datosEditados.apellido !== personaOriginal.apellido ||
+            datosEditados.circunscripcion !== personaOriginal.circunscripcion ||
+            datosEditados.cargo !== personaOriginal.cargo;
+
+        if (!cambiosDetectados) {
+            // No hubo cambios, restaurar modo normal sin guardar
+            this.cancelarEdicionSolicitante(id);
+            this.mostrarNotificacion('No se detectaron cambios para guardar', 'info');
+            return;
+        }
+
         // Actualizar en el modelo
-        this.modeloPersonas.actualizarPersona(id, datosEditados);
+        const personaActualizada = this.modeloPersonas.actualizarPersona(id, datosEditados);
         
-        const persona = this.modeloPersonas.obtenerPersonaPorId(id);
-        if (!persona) return;
+        if (!personaActualizada) return;
         
         // Actualizar solo esta fila específica
         const celdas = fila.querySelectorAll('td');
         
         // Actualizar celdas de datos
-        celdas[0].textContent = persona.nombre;
-        celdas[1].textContent = persona.apellido;
-        celdas[2].textContent = persona.circunscripcion;
-        celdas[3].textContent = persona.cargo;
+        celdas[0].textContent = personaActualizada.nombre;
+        celdas[1].textContent = personaActualizada.apellido;
+        celdas[2].textContent = personaActualizada.circunscripcion;
+        celdas[3].textContent = personaActualizada.cargo;
         
         // Restaurar botones de acciones (solo editar y eliminar para gestor-solicitantes)
         celdas[4].innerHTML = `
-            <button class="btn-editar" onclick="iniciarEdicionSolicitanteGlobal(${persona.id})" title="Editar solicitante">✏️</button>
-            <button class="btn-eliminar" onclick="gestorSolicitantes.eliminarSolicitante(${persona.id})" title="Eliminar solicitante">🗑️</button>
+            <button class="btn-editar" onclick="iniciarEdicionSolicitanteGlobal(${personaActualizada.id})" title="Editar solicitante">✏️</button>
+            <button class="btn-eliminar" onclick="gestorSolicitantes.eliminarSolicitante(${personaActualizada.id})" title="Eliminar solicitante">🗑️</button>
         `;
         
         // Mostrar notificación
-        this.mostrarNotificacion(`Solicitante ${datosEditados.nombre} ${datosEditados.apellido} actualizado correctamente`, 'success');
+        this.mostrarNotificacion(`Solicitante ${personaActualizada.nombre} ${personaActualizada.apellido} actualizado correctamente`, 'success');
     }
 
     cancelarEdicionSolicitante(id) {
@@ -240,8 +259,6 @@ class ControladorActividades {
             
             // Generar PDF
             generarPDFActividades(datos);
-            
-            this.vistaActividades.mostrarNotificacion('PDF generado correctamente', 'exito');
         } catch (error) {
             this.vistaActividades.mostrarNotificacion('Error al generar PDF', 'error');
             console.error('Error:', error);
@@ -408,17 +425,19 @@ class ControladorActividades {
             </select>
         `;
         
+        // Circunscripción - input text editable
+        celdas[4].innerHTML = `<input type="text" class="edit-input" value="${actividad.circunscripcion || ''}" data-field="circunscripcion" placeholder="Ingrese circunscripción">`;
+        
         // Descripción - textarea
-        celdas[4].innerHTML = `<textarea class="edit-textarea" data-field="descripcion" rows="2">${actividad.descripcion || ''}</textarea>`;
+        celdas[5].innerHTML = `<textarea class="edit-textarea" data-field="descripcion" rows="2">${actividad.descripcion || ''}</textarea>`;
         
         // Estado - select con estados del sistema
-        const estados = ['completado', 'pendiente', 'en-progreso'];
+        const estados = ['completado', 'pendiente'];
         const etiquetasEstados = {
             'completado': 'Completado',
-            'pendiente': 'Pendiente',
-            'en-progreso': 'En progreso'
+            'pendiente': 'Pendiente'
         };
-        celdas[5].innerHTML = `
+        celdas[6].innerHTML = `
             <select class="edit-select" data-field="estado">
                 <option value="">Seleccione estado</option>
                 ${estados.map(estado => 
@@ -428,7 +447,7 @@ class ControladorActividades {
         `;
         
         // Acciones - botones Guardar y Cancelar
-        celdas[6].innerHTML = `
+        celdas[7].innerHTML = `
             <div class="btn-accion-grupo">
                 <button class="btn-guardar-tabla" onclick="guardarEdicionActividadGlobal(${actividad.id})" title="Guardar cambios">💾</button>
                 <button class="btn-cancelar-tabla" onclick="cancelarEdicionActividadGlobal(${actividad.id})" title="Cancelar edición">❌</button>
@@ -461,10 +480,11 @@ class ControladorActividades {
         const tecnicoSelect = fila.querySelector('select[data-field="tecnico"]');
         const tipoSelect = fila.querySelector('select[data-field="tipo"]');
         const solicitanteSelect = fila.querySelector('select[data-field="solicitanteId"]');
+        const circunscripcionInput = fila.querySelector('input[data-field="circunscripcion"]');
         const descripcionTextarea = fila.querySelector('textarea[data-field="descripcion"]');
         const estadoSelect = fila.querySelector('select[data-field="estado"]');
 
-        if (!fechaInput || !tecnicoSelect || !tipoSelect || !solicitanteSelect || !estadoSelect) {
+        if (!fechaInput || !tecnicoSelect || !tipoSelect || !solicitanteSelect || !circunscripcionInput || !estadoSelect) {
             console.error('No se encontraron todos los campos de edición');
             return;
         }
@@ -473,6 +493,7 @@ class ControladorActividades {
         const tecnico = tecnicoSelect.value;
         const tipo = tipoSelect.value;
         const solicitanteId = solicitanteSelect.value;
+        const circunscripcion = circunscripcionInput.value;
         const descripcion = descripcionTextarea ? descripcionTextarea.value : '';
         const estado = estadoSelect.value;
 
@@ -492,7 +513,6 @@ class ControladorActividades {
         // Obtener datos del solicitante seleccionado
         let nombre = actividadOriginal.nombre;
         let apellido = actividadOriginal.apellido;
-        let circunscripcion = actividadOriginal.circunscripcion;
         let cargo = actividadOriginal.cargo;
 
         // Si se cambió el solicitante, obtener sus datos
@@ -501,7 +521,6 @@ class ControladorActividades {
             if (nuevaPersona) {
                 nombre = nuevaPersona.nombre;
                 apellido = nuevaPersona.apellido;
-                circunscripcion = nuevaPersona.circunscripcion;
                 cargo = nuevaPersona.cargo;
             }
         }
@@ -571,19 +590,22 @@ class ControladorActividades {
         celdas[1].innerHTML = tecnicoOriginal;
         
         // Tipo
-        celdas[2].innerHTML = `<span class="badge-tipo ${tipoOriginal}">${this.vistaActividades.obtenerEtiquetaTipo(tipoOriginal)}</span>`;
+        celdas[2].innerHTML = `${this.vistaActividades.obtenerEtiquetaTipo(tipoOriginal)}`;
         
         // Solicitante
         celdas[3].innerHTML = `${actividad.nombre} ${actividad.apellido}`;
         
+        // Circunscripción
+        celdas[4].innerHTML = actividad.circunscripcion || 'N/A';
+        
         // Descripción
-        celdas[4].innerHTML = descripcionOriginal || 'Sin descripción';
+        celdas[5].innerHTML = descripcionOriginal || 'Sin descripción';
         
         // Estado
-        celdas[5].innerHTML = `<span class="badge-estado ${estadoOriginal}">${this.vistaActividades.obtenerEtiquetaEstado(estadoOriginal)}</span>`;
+        celdas[6].innerHTML = `<span class="badge-estado ${estadoOriginal}">${this.vistaActividades.obtenerEtiquetaEstado(estadoOriginal)}</span>`;
         
         // Acciones - botones Editar y Eliminar
-        celdas[6].innerHTML = `
+        celdas[7].innerHTML = `
             <div class="btn-accion-grupo">
                 <button class="btn-editar-tabla" onclick="iniciarEdicionActividadGlobal(${id})" title="Editar actividad">✏️</button>
                 <button class="btn-eliminar-tabla" data-id="${id}" title="Eliminar actividad">🗑️</button>

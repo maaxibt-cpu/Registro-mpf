@@ -111,8 +111,8 @@ class GestorSolicitantes {
 
     eliminarSolicitante(id) {
         // Usar el nuevo modal de confirmación global
-        if (typeof mostrarModalConfirmacion === 'function') {
-            mostrarModalConfirmacion(id);
+        if (typeof mostrarModalConfirmacionSolicitante === 'function') {
+            mostrarModalConfirmacionSolicitante(id);
         } else {
             // Fallback al método antiguo si el modal no está disponible
             const personas = this.obtenerTodasPersonas();

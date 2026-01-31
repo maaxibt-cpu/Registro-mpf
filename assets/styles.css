@@ -68,7 +68,7 @@ header p {
 
 main {
     display: flex;
-    gap: 10px;
+    gap: 25px;
     margin-bottom: 0;
     padding-bottom: 0;
     flex: 1;
@@ -76,9 +76,10 @@ main {
     min-height: 0;
     width: 100%;
     max-width: none;
-    margin: 0;
-    padding: 0 20px;
+    margin: 0 auto;
+    padding: 0 30px;
     box-sizing: border-box;
+    justify-content: center;
 }
 
 .form-section {
@@ -96,7 +97,7 @@ main {
 
 .list-section {
     background: rgba(45, 45, 45, 0.95);
-    padding: 20px;
+    padding: 25px;
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(0, 131, 153, 0.2);
@@ -104,11 +105,12 @@ main {
     border-left: 4px solid #008399;
     min-height: 0;
     height: auto;
-    flex: 1;
+    flex: 2;
     display: flex;
     flex-direction: column;
     overflow: visible;
     min-width: 0;
+    margin-left: 20px;
 }
 
 .form-section h2, .list-section h2 {
@@ -117,6 +119,8 @@ main {
     font-size: 1.8em;
     font-weight: 600;
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
     border-bottom: 2px solid rgba(0, 131, 153, 0.3);
     padding-bottom: 10px;
 }
@@ -130,6 +134,8 @@ main {
     margin-bottom: 8px;
     font-weight: 600;
     color: #008399;
+    text-align: center;
+    width: 100%;
 }
 
 .form-group input,
@@ -144,6 +150,7 @@ main {
     background-color: rgba(26, 26, 26, 0.8);
     color: #e0e0e0;
     font-family: inherit;
+    text-align: center;
 }
 
 .form-group input:focus,
@@ -178,6 +185,7 @@ button[type="submit"] {
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 25px;
 }
 
 button[type="submit"]:hover {
@@ -924,7 +932,7 @@ button[type="submit"]:active {
 }
 
 .modal-body {
-    padding: 30px;
+    padding: 20px;
     max-height: 70vh;
     overflow-y: auto;
 }
@@ -1212,7 +1220,7 @@ select option {
 }
 
 .modal-footer {
-    padding: 20px;
+    padding: 15px 20px;
     border-top: 1px solid #404040;
     display: flex;
     gap: 10px;

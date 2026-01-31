@@ -38,7 +38,39 @@ document.addEventListener('DOMContentLoaded', () => {
         
         console.log('Funciones globales de edición disponibles');
     }
+    
+    // Inicializar auto-expansión para textareas de descripción
+    inicializarAutoExpansionTextareas();
 });
+
+// Función para auto-expandir textareas según el contenido
+function inicializarAutoExpansionTextareas() {
+    const textareas = document.querySelectorAll('textarea[placeholder*="actividad realizada"]');
+    
+    textareas.forEach(textarea => {
+        // Configurar altura mínima
+        textarea.style.minHeight = '100px';
+        textarea.style.overflowY = 'hidden';
+        
+        // Función de auto-expansión
+        const autoExpand = (e) => {
+            // Reset height to auto to get the correct scrollHeight
+            textarea.style.height = 'auto';
+            // Set the height to scrollHeight
+            textarea.style.height = textarea.scrollHeight + 'px';
+        };
+        
+        // Event listeners
+        textarea.addEventListener('input', autoExpand);
+        textarea.addEventListener('keydown', autoExpand);
+        textarea.addEventListener('keyup', autoExpand);
+        
+        // Expandir inicialmente si ya tiene contenido
+        if (textarea.value) {
+            autoExpand();
+        }
+    });
+}
 
 // Funciones globales para el modal de búsqueda de solicitantes
 function cerrarModalBusqueda() {
@@ -61,7 +93,8 @@ function seleccionarSolicitante(id) {
 
 
 // Variables globales para el modal de confirmación
-let actividadAEliminarId = null;
+let elementoAEliminarId = null;
+let tipoElementoAEliminar = ''; // 'actividad' o 'solicitante'
 
 // Funciones globales para el modal de edición de actividades
 function mostrarModalEdicionActividad() {
@@ -114,9 +147,31 @@ if (formEdicionActividad) {
 }
 
 function mostrarModalConfirmacionActividad(id) {
-    actividadAEliminarId = id;
+    elementoAEliminarId = id;
+    tipoElementoAEliminar = 'actividad';
+    
     const modal = document.getElementById('modalConfirmacion');
-    if (modal) {
+    const titulo = document.getElementById('modalConfirmacionTitulo');
+    const mensaje = document.getElementById('modalConfirmacionMensaje');
+    
+    if (modal && titulo && mensaje) {
+        titulo.textContent = '⚠️ Confirmar Eliminación de Actividad';
+        mensaje.textContent = '¿Está seguro de que desea eliminar esta actividad?';
+        modal.style.display = 'flex';
+    }
+}
+
+function mostrarModalConfirmacionSolicitante(id) {
+    elementoAEliminarId = id;
+    tipoElementoAEliminar = 'solicitante';
+    
+    const modal = document.getElementById('modalConfirmacion');
+    const titulo = document.getElementById('modalConfirmacionTitulo');
+    const mensaje = document.getElementById('modalConfirmacionMensaje');
+    
+    if (modal && titulo && mensaje) {
+        titulo.textContent = '⚠️ Confirmar Eliminación de Solicitante';
+        mensaje.textContent = '¿Está seguro de que desea eliminar este solicitante?';
         modal.style.display = 'flex';
     }
 }
@@ -126,17 +181,36 @@ function cerrarModalConfirmacion() {
     if (modal) {
         modal.style.display = 'none';
     }
-    actividadAEliminarId = null;
+    elementoAEliminarId = null;
+    tipoElementoAEliminar = '';
 }
 
 function confirmarEliminacion() {
-    if (actividadAEliminarId && window.aplicacion && window.aplicacion.controlador) {
-        window.aplicacion.controlador.modeloActividades.eliminarActividad(actividadAEliminarId);
+    if (elementoAEliminarId && window.aplicacion && window.aplicacion.controlador) {
         
-        // Actualizar la vista
-        window.aplicacion.controlador.actualizarVista();
-        
-        window.aplicacion.vistaActividades.mostrarNotificacion('Actividad eliminada correctamente', 'exito');
+        if (tipoElementoAEliminar === 'actividad') {
+            // Eliminar actividad
+            window.aplicacion.controlador.modeloActividades.eliminarActividad(elementoAEliminarId);
+            
+            // Actualizar la vista
+            window.aplicacion.controlador.actualizarVista();
+            
+            window.aplicacion.vistaActividades.mostrarNotificacion('Actividad eliminada correctamente', 'exito');
+            
+        } else if (tipoElementoAEliminar === 'solicitante') {
+            // Eliminar solicitante
+            window.aplicacion.controlador.modeloPersonas.eliminarPersona(elementoAEliminarId);
+            
+            // Actualizar vista de actividades
+            window.aplicacion.controlador.actualizarVista();
+            
+            // Actualizar vista de gestor de solicitantes si existe
+            if (window.gestorSolicitantes) {
+                window.gestorSolicitantes.cargarSolicitantes();
+            }
+            
+            window.aplicacion.vistaActividades.mostrarNotificacion('Solicitante eliminado correctamente', 'exito');
+        }
         
         cerrarModalConfirmacion();
     }
@@ -232,13 +306,42 @@ function seleccionarSolicitanteAutocompletado(id, nombreCompleto) {
 // Función para generar PDF de actividades
 function capitalizarPrimeraLetra(texto) {
     if (!texto || typeof texto !== 'string') return texto;
+    
+    // Lista de palabras que deben conservar su capitalización correcta
+    const palabrasEspeciales = {
+        'circunscripción': 'Circunscripción',
+        'primera circunscripción capital': 'Primera Circunscripción Capital',
+        'segunda circunscripción chilecito': 'Segunda Circunscripción Chilecito',
+        'tercera circunscripción chamical': 'Tercera Circunscripción Chamical',
+        'cuarta circunscripción aimogasta': 'Cuarta Circunscripción Aimogasta',
+        'quinta circunscripción chepes': 'Quinta Circunscripción Chepes',
+        'sexta circunscripción villa unión': 'Sexta Circunscripción Villa Unión'
+    };
+    
+    // Convertir a minúsculas para comparación
+    const textoLower = texto.toLowerCase();
+    
+    // Verificar si el texto coincide con alguna palabra especial
+    for (const [key, value] of Object.entries(palabrasEspeciales)) {
+        if (textoLower === key) {
+            return value;
+        }
+    }
+    
+    // Capitalización normal para otras palabras
     return texto.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
 }
 
 function generarPDFActividades(datos) {
     try {
         if (!datos || datos.length === 0) {
-            alert('No hay actividades para exportar');
+            // Mostrar notificación en lugar de modal
+            if (window.aplicacion && window.aplicacion.vistaActividades) {
+                window.aplicacion.vistaActividades.mostrarNotificacion('No hay actividades para exportar', 'info');
+            } else {
+                // Fallback si no está disponible el sistema de notificaciones
+                alert('No hay actividades para exportar');
+            }
             return;
         }
         
@@ -267,6 +370,7 @@ function generarPDFActividades(datos) {
             capitalizarPrimeraLetra(actividad.tecnico || ''),
             capitalizarPrimeraLetra(actividad.tipo || ''),
             capitalizarPrimeraLetra(`${actividad.nombre || ''} ${actividad.apellido || ''}`.trim()),
+            capitalizarPrimeraLetra(actividad.circunscripcion || 'N/A'),
             capitalizarPrimeraLetra(actividad.descripcion || ''),
             capitalizarPrimeraLetra(actividad.estado || '')
         ]);
@@ -275,8 +379,9 @@ function generarPDFActividades(datos) {
         const headers = [
             'Fecha',
             'Técnico',
-            'Tipo',
+            'Tipo de Problema',
             'Solicitante',
+            'Circunscripción',
             'Descripción',
             'Estado'
         ];
@@ -323,6 +428,11 @@ function generarPDFActividades(datos) {
         // Limpiar URL después de un tiempo
         setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
         
+        // Mostrar notificación de éxito
+        if (window.aplicacion && window.aplicacion.vistaActividades) {
+            window.aplicacion.vistaActividades.mostrarNotificacion('PDF generado correctamente', 'success');
+        }
+        
     } catch (error) {
         console.error('Error al generar PDF:', error);
         alert('Error al generar el PDF. Verifique la consola para más detalles.');
@@ -351,3 +461,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
