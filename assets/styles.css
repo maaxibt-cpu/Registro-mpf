@@ -126,7 +126,7 @@ main {
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .form-group label {
@@ -1569,6 +1569,114 @@ select option {
     font-weight: 300;
 }
 
+/* Controles superiores en línea para inventario */
+.controles-superiores {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #2c2c2c 0%, #272727 100%);
+    border-radius: 10px;
+    border: 1px solid #4a4a4a;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.busqueda-filtros {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.search-input-inline {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #404040;
+    border-radius: 8px;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-input-inline:focus {
+    outline: none;
+    border-color: #008399;
+    box-shadow: 0 0 0 3px rgba(0, 131, 153, 0.2),
+                inset 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: #2c2c2c;
+}
+
+.search-input-inline::placeholder {
+    color: #888;
+    font-weight: 300;
+}
+
+.filtro-inline {
+    padding: 8px 12px;
+    border: 2px solid #404040;
+    border-radius: 6px;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.filtro-inline:focus {
+    outline: none;
+    border-color: #008399;
+    box-shadow: 0 0 0 3px rgba(0, 131, 153, 0.2);
+    background: #2c2c2c;
+}
+
+.botones-accion {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-aceptar {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.btn-aceptar:hover {
+    background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.btn-cancelar {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.btn-cancelar:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
 .search-section {
     margin-bottom: 30px;
     padding: 20px;
@@ -1903,4 +2011,264 @@ select option {
     background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+/* ===== ESTILOS PARA SISTEMA DE INVENTARIO/STOCK ===== */
+
+/* Botón Stock en header */
+.btn-stock {
+    background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+}
+
+.btn-stock:hover {
+    background: linear-gradient(135deg, #5a32a3 0%, #4a2989 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(111, 66, 193, 0.4);
+}
+
+/* Formulario de stock */
+.form-section h4 {
+    color: #e0e0e0;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #404040;
+}
+
+/* Filtros de stock */
+.filtros-stock {
+    margin-top: 15px;
+}
+
+.filtros-stock select {
+    padding: 10px 14px;
+    border: 2px solid #404040;
+    border-radius: 8px;
+    background: #2a2a2a;
+    color: #e0e0e0;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filtros-stock select:focus {
+    outline: none;
+    border-color: #6f42c1;
+    box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2),
+                inset 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: #2c2c2c;
+}
+
+/* Tabla de stock */
+.tabla-stock-container {
+    margin-top: 20px;
+    border-radius: 12px;
+    border: 1px solid #404040;
+    background: #2a2a2a;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    overflow: auto;
+    max-height: 400px;
+}
+
+.tabla-stock {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #2a2a2a;
+    min-width: 800px;
+}
+
+.tabla-stock th {
+    background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);
+    color: white;
+    padding: 16px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 3px solid #6f42c1;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.tabla-stock td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #404040;
+    color: #e0e0e0;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.tabla-stock tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-stock tr:hover td {
+    background: rgba(111, 66, 193, 0.08);
+    color: #ffffff;
+}
+
+/* Badges de estado */
+.badge-estado {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    min-width: 80px;
+    text-align: center;
+}
+
+.badge-nuevo {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.badge-usado {
+    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+    color: #000;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+}
+
+.badge-reparado {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(23, 162, 184, 0.3);
+}
+
+.badge-dado-de-baja {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+}
+
+/* Textos vacíos/errores */
+.texto-vacio {
+    text-align: center;
+    color: #a0a0a0;
+    font-style: italic;
+    padding: 40px;
+    font-size: 16px;
+}
+
+.texto-error {
+    text-align: center;
+    color: #dc3545;
+    font-weight: 500;
+    padding: 40px;
+    font-size: 16px;
+}
+
+/* Responsive para stock */
+@media (max-width: 768px) {
+    .tabla-stock-container {
+        margin: 15px 0;
+        border-radius: 8px;
+    }
+    
+    .tabla-stock {
+        min-width: 700px;
+    }
+    
+    .filtros-stock {
+        margin-top: 10px;
+    }
+    
+    .form-section h4 {
+        font-size: 16px;
+    }
+}
+
+/* Estilos para fila de edición rápida */
+.fila-edicion-rapida {
+    background: rgba(111, 66, 193, 0.15) !important;
+    border: 2px solid #6f42c1;
+}
+
+.fila-edicion-rapida td {
+    padding: 8px 6px !important;
+    vertical-align: middle;
+}
+
+.input-edicion-rapida {
+    width: 100%;
+    padding: 8px 10px;
+    border: 2px solid rgba(111, 66, 193, 0.5);
+    border-radius: 6px;
+    background: #2a2a2a;
+    color: #e0e0e0;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.input-edicion-rapida:focus {
+    outline: none;
+    border-color: #6f42c1;
+    background: #2e2e2e;
+    box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.3);
+}
+
+.input-edicion-rapida::placeholder {
+    color: #888;
+}
+
+.btn-guardar-rapido,
+.btn-cancelar-rapido {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0 2px;
+    display: inline-block;
+}
+
+.btn-guardar-rapido {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    color: white;
+}
+
+.btn-guardar-rapido:hover {
+    background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+    transform: translateY(-1px);
+}
+
+.btn-cancelar-rapido {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+}
+
+.btn-cancelar-rapido:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+/* Estilos para asegurar que los botones estén en línea dentro de la celda */
+#filaEdicionRapida td:last-child {
+    white-space: nowrap;
+    text-align: center;
+}
+
+#filaEdicionRapida .btn-guardar-rapido,
+#filaEdicionRapida .btn-cancelar-rapido {
+    display: inline-block !important;
+    vertical-align: middle;
 }

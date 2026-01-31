@@ -16,6 +16,7 @@
 
         <div class="header-actions">
             <button type="button" id="btnSolicitantes" class="btn-solicitantes" onclick="abrirModalSolicitantes()">👥 Solicitantes</button>
+            <button type="button" id="btnStock" class="btn-stock" onclick="abrirModalStock()">📦 Stock</button>
             <button type="button" id="exportBtn" class="btn-export" onclick="event.preventDefault(); event.stopPropagation();">📥 Exportar Datos</button>
         </div>
 
@@ -200,6 +201,12 @@
     <script src="vista/vista.js"></script>
     <script src="vista/vista-formulario-solicitante.js"></script>
     <script src="controlador/controlador.js"></script>
+    
+    <!-- Scripts para gestión de inventario/stock -->
+    <script src="modelo/modelo-stock.js"></script>
+    <script src="vista/vista-stock.js"></script>
+    <script src="controlador/controlador-stock.js"></script>
+    
     <script src="aplicacion.js"></script>
     
     <!-- Modal de Confirmación -->
@@ -293,6 +300,78 @@
             <div class="modal-footer">
                 <button type="button" class="btn-cancelar" onclick="cerrarModalConfirmacion()">Cancelar</button>
                 <button type="button" class="btn-confirmar" onclick="confirmarEliminacion()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para gestión de inventario/stock -->
+    <div id="modalStock" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>📦 Gestión de Inventario</h3>
+                <span class="close" onclick="cerrarModalStock()">&times;</span>
+            </div>
+            <div class="modal-body">
+                
+                <!-- Barra de búsqueda, filtros y botones en línea -->
+                <div class="controles-superiores">
+                    <div class="busqueda-filtros">
+                        <input type="text" id="buscarStock" placeholder="🔍 Buscar por nombre, modelo o serial..." class="search-input-inline">
+                        <select id="filtroEstado" class="filtro-inline">
+                            <option value="">Todos los estados</option>
+                            <option value="nuevo">Nuevo</option>
+                            <option value="usado">Usado</option>
+                            <option value="reparado">Reparado</option>
+                            <option value="dado-de-baja">Dado de baja</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Tabla de inventario -->
+                <div class="tabla-stock-container">
+                    <table class="tabla-stock">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Modelo</th>
+                                <th>Serial</th>
+                                <th>Cantidad</th>
+                                <th>Estado</th>
+                                <th>Ubicación</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        
+                        <!-- Fila de edición rápida -->
+                        <tbody id="filaEdicionRapida">
+                            <tr class="fila-edicion-rapida">
+                                <td><input type="text" class="input-edicion-rapida" placeholder="Nombre" id="rapidaNombre"></td>
+                                <td><input type="text" class="input-edicion-rapida" placeholder="Modelo" id="rapidaModelo"></td>
+                                <td><input type="text" class="input-edicion-rapida" placeholder="Serial" id="rapidaSerial"></td>
+                                <td><input type="number" class="input-edicion-rapida" placeholder="1" min="1" value="1" id="rapidaCantidad"></td>
+                                <td>
+                                    <select class="input-edicion-rapida" id="rapidaEstado">
+                                        <option value="nuevo">Nuevo</option>
+                                        <option value="usado">Usado</option>
+                                        <option value="reparado">Reparado</option>
+                                        <option value="dado-de-baja">Dado de baja</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" class="input-edicion-rapida" placeholder="Ubicación" id="rapidaUbicacion"></td>
+                                <td class="fecha-auto">Auto</td>
+                                <td>
+                                    <button type="button" class="btn-guardar-rapido" onclick="guardarEdicionRapida()" title="Guardar">✅</button>
+                                    <button type="button" class="btn-cancelar-rapido" onclick="cancelarEdicionRapida()" title="Cancelar">❌</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        
+                        <tbody id="cuerpoTablaStock">
+                            <!-- Los datos se cargarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -462,3 +462,121 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Funciones globales para el modal de stock
+function abrirModalStock() {
+    const modal = document.getElementById('modalStock');
+    if (modal) {
+        modal.style.display = 'block';
+        // Inicializar controlador de stock si no existe
+        if (!window.controladorStock) {
+            inicializarControladorStock();
+        }
+        // Cargar partes al abrir el modal
+        if (window.controladorStock) {
+            window.controladorStock.cargarPartes();
+        }
+    }
+}
+
+function cerrarModalStock() {
+    const modal = document.getElementById('modalStock');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function limpiarFormStock() {
+    if (window.controladorStock) {
+        window.controladorStock.limpiarFormulario();
+    }
+}
+
+function inicializarControladorStock() {
+    // Verificar si los componentes de stock están disponibles
+    if (typeof ModeloStock === 'undefined' || typeof VistaStock === 'undefined' || typeof ControladorStock === 'undefined') {
+        console.error('Componentes de stock no disponibles');
+        return;
+    }
+    
+    try {
+        const modeloStock = new ModeloStock();
+        const vistaStock = new VistaStock();
+        window.controladorStock = new ControladorStock(modeloStock, vistaStock);
+        console.log('Controlador de stock inicializado correctamente');
+    } catch (error) {
+        console.error('Error al inicializar controlador de stock:', error);
+    }
+}
+
+// Cerrar modal de stock al hacer clic fuera del contenido
+document.addEventListener('DOMContentLoaded', function() {
+    const modalStock = document.getElementById('modalStock');
+    if (modalStock) {
+        modalStock.addEventListener('click', (e) => {
+            if (e.target === modalStock) {
+                cerrarModalStock();
+            }
+        });
+    }
+    
+    // Cerrar modal de stock con tecla Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('modalStock');
+            if (modal && modal.style.display === 'block') {
+                cerrarModalStock();
+            }
+        }
+    });
+
+    // Función para verificar datos guardados (solo para testing)
+    window.verificarStock = function() {
+        const datos = JSON.parse(localStorage.getItem('inventarioPartes')) || [];
+        console.log('📊 Datos en localStorage:', datos);
+        alert('Partes en inventario: ' + datos.length + '\nÚltima parte: ' + (datos.length > 0 ? datos[datos.length-1].nombre : 'Ninguna'));
+        return datos;
+    };
+
+    // Función para guardar edición rápida
+    window.guardarEdicionRapida = function() {
+        if (!window.controladorStock) {
+            alert('Controlador de stock no disponible');
+            return;
+        }
+
+        const nombre = document.getElementById('rapidaNombre').value.trim();
+        if (!nombre) {
+            alert('El nombre es obligatorio');
+            return;
+        }
+
+        const datos = {
+            nombre: nombre,
+            modelo: document.getElementById('rapidaModelo').value.trim(),
+            serial: document.getElementById('rapidaSerial').value.trim(),
+            cantidad: parseInt(document.getElementById('rapidaCantidad').value) || 1,
+            estado: document.getElementById('rapidaEstado').value,
+            ubicacion: document.getElementById('rapidaUbicacion').value.trim(),
+            observaciones: '' // La edición rápida no incluye observaciones
+        };
+
+        // Usar el controlador existente para guardar
+        const nuevaParte = window.controladorStock.modeloStock.agregarParte(datos);
+        if (nuevaParte) {
+            window.controladorStock.mostrarNotificacion('Parte agregada rápidamente', 'success');
+            window.controladorStock.cargarPartes();
+            cancelarEdicionRapida(); // Limpiar campos después de guardar
+        }
+    };
+
+    // Función para cancelar edición rápida y limpiar campos
+    window.cancelarEdicionRapida = function() {
+        document.getElementById('rapidaNombre').value = '';
+        document.getElementById('rapidaModelo').value = '';
+        document.getElementById('rapidaSerial').value = '';
+        document.getElementById('rapidaCantidad').value = '1';
+        document.getElementById('rapidaEstado').value = 'nuevo';
+        document.getElementById('rapidaUbicacion').value = '';
+    };
+});
+
