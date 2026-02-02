@@ -426,6 +426,12 @@ button[type="submit"]:active {
     border: none !important;
 }
 
+.status-prestado {
+    background: #9c27b0 !important;
+    color: white !important;
+    border: none !important;
+}
+
 .status-en-progreso {
     background: #3498db !important;
     color: white !important;
@@ -634,6 +640,17 @@ button[type="submit"]:active {
     background: #9E9E9E;
     color: white;
 }
+
+.badge-prestado {
+    background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(156, 39, 176, 0.4);
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+
 
 .btn-editar-tabla {
     background: linear-gradient(135deg, #0088cc 0%, #0066aa 100%);
@@ -883,8 +900,8 @@ button[type="submit"]:active {
     margin: 5% auto;
     padding: 0;
     border-radius: 12px;
-    width: 90%;
-    max-width: 600px;
+    width: 95%;
+    max-width: 900px;
     max-height: 80vh;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
@@ -1259,10 +1276,38 @@ select option {
 
 .texto-advertencia {
     color: #ff6b6b;
-    font-size: 0.9em;
-    font-weight: 500;
-    margin-top: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 16px;
     text-align: center;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.15) 0%, rgba(220, 53, 69, 0.15) 100%);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.texto-advertencia::before {
+    content: '⚠️';
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.texto-advertencia::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%, 
+        rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 .modal-body p {
@@ -1895,46 +1940,91 @@ select option {
     }
 }
 
-/* Modal de Confirmación */
+/* Modal de Confirmación - Diseño Mejorado */
 .modal-confirmacion {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(4px);
+    z-index: 10000;
+    backdrop-filter: blur(8px) saturate(180%);
+    animation: modalFadeIn 0.3s ease-out;
 }
 
-.modal-confirmacion .modal-contenido {
-    background: linear-gradient(135deg, #1e2b32 0%, #2a3b45 100%);
-    border-radius: 12px;
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px) saturate(100%);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(8px) saturate(180%);
+    }
+}
+
+.modal-confirmacion .modal-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 16px;
     padding: 0;
     width: 90%;
-    max-width: 450px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border: 1px solid #404040;
+    max-width: 480px;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 0 20px rgba(220, 53, 69, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;
+    transform: scale(0.95);
+    animation: modalScaleIn 0.3s ease-out forwards;
+}
+
+@keyframes modalScaleIn {
+    to {
+        transform: scale(1);
+    }
 }
 
 .modal-confirmacion .modal-header {
     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-    padding: 20px 24px;
+    padding: 24px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-confirmacion .modal-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%, 
+        rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
 }
 
 .modal-confirmacion .modal-header h3 {
     color: white;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 700;
     margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .modal-confirmacion .modal-header .btn-cerrar {
@@ -1958,34 +2048,57 @@ select option {
 }
 
 .modal-confirmacion .modal-body {
-    padding: 24px;
+    padding: 32px 28px;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
 }
 
 .modal-confirmacion .modal-body p {
-    color: #e0e0e0;
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 20px;
+    color: #ffffff;
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 24px;
     text-align: center;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .modal-confirmacion .modal-acciones {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     justify-content: center;
+    padding: 0 28px 32px;
+    margin-top: -8px;
 }
 
 .modal-confirmacion .btn-cancelar {
     background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
     color: white;
     border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    min-width: 100px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-confirmacion .btn-cancelar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%, 
+        rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .modal-confirmacion .btn-cancelar:hover {
@@ -1998,19 +2111,38 @@ select option {
     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
     color: white;
     border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
+    padding: 14px 28px;
+    border-radius: 12px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    min-width: 100px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-confirmacion .btn-confirmar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%, 
+        rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .modal-confirmacion .btn-confirmar:hover {
     background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(220, 53, 69, 0.5);
 }
 
 /* ===== ESTILOS PARA SISTEMA DE INVENTARIO/STOCK ===== */
@@ -2077,8 +2209,9 @@ select option {
     border: 1px solid #404040;
     background: #2a2a2a;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    overflow: auto;
-    max-height: 400px;
+    overflow-x: auto;
+    overflow-y: visible;
+    max-height: none;
 }
 
 .tabla-stock {
@@ -2086,14 +2219,130 @@ select option {
     border-collapse: separate;
     border-spacing: 0;
     background: #2a2a2a;
-    min-width: 800px;
+    min-width: auto;
+    table-layout: fixed;
+}
+
+.tabla-stock th:nth-child(1),
+.tabla-stock td:nth-child(1) {
+    width: 22%;
+    min-width: 180px;
+}
+
+.tabla-stock th:nth-child(2),
+.tabla-stock td:nth-child(2) {
+    width: 15%;
+    min-width: 120px;
+}
+
+.tabla-stock th:nth-child(3),
+.tabla-stock td:nth-child(3) {
+    width: 15%;
+    min-width: 120px;
+}
+
+.tabla-stock th:nth-child(4),
+.tabla-stock td:nth-child(4) {
+    width: 12%;
+    min-width: 100px;
+}
+
+.tabla-stock th:nth-child(5),
+.tabla-stock td:nth-child(5) {
+    width: 22%;
+    min-width: 180px;
+}
+
+.tabla-stock th:nth-child(6),
+.tabla-stock td:nth-child(6) {
+    width: 12%;
+    min-width: 100px;
+}
+
+.tabla-stock th:nth-child(7),
+.tabla-stock td:nth-child(7) {
+    width: 12%;
+    min-width: 100px;
+}
+
+/* Estilos específicos para selects en la tabla de stock */
+.tabla-stock select.input-edicion-rapida {
+    width: auto !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Asegurar que los inputs en la tabla respeten el ancho de columna */
+.tabla-stock .input-edicion-rapida {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+}
+
+/* Centrar el contenido de los selects también */
+.tabla-stock select.input-edicion-rapida {
+    text-align: center !important;
+    text-align-last: center !important;
+}
+
+/* Centrar el texto de las opciones en el dropdown */
+.tabla-stock select.input-edicion-rapida option {
+    text-align: center !important;
+}
+
+/* Estilos específicos para el select de componentes */
+#rapidaNombre {
+    width: auto !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    white-space: normal !important;
+}
+
+/* Estilos para el dropdown del select */
+#rapidaNombre option {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    padding: 8px 12px !important;
+}
+
+/* Estilo para el select cerrado - texto completo visible */
+#rapidaNombre {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Eliminar scroll bars del dropdown */
+#rapidaNombre {
+    max-height: none !important;
+}
+
+/* Asegurar que el dropdown muestre todas las opciones */
+#rapidaNombre {
+    size: 10 !important;
+}
+
+/* Forzar que las celdas de la tabla muestren todo el contenido */
+.tabla-stock td {
+    overflow: visible !important;
+    white-space: normal !important;
+}
+
+/* Asegurar que el contenedor de la tabla no recorte contenido */
+.tabla-stock-container {
+    overflow: visible !important;
 }
 
 .tabla-stock th {
     background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);
     color: white;
     padding: 16px 12px;
-    text-align: left;
+    text-align: center;
     font-weight: 600;
     font-size: 14px;
     text-transform: uppercase;
@@ -2110,6 +2359,8 @@ select option {
     color: #e0e0e0;
     font-size: 14px;
     font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .tabla-stock tr:last-child td {

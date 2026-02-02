@@ -295,9 +295,8 @@
             </div>
             <div class="modal-body">
                 <p id="modalConfirmacionMensaje">¿Está seguro de que desea eliminar este elemento?</p>
-                <p class="texto-advertencia">Esta acción no se puede deshacer.</p>
             </div>
-            <div class="modal-footer">
+            <div class="modal-acciones">
                 <button type="button" class="btn-cancelar" onclick="cerrarModalConfirmacion()">Cancelar</button>
                 <button type="button" class="btn-confirmar" onclick="confirmarEliminacion()">Eliminar</button>
             </div>
@@ -332,13 +331,12 @@
                     <table class="tabla-stock">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>Modelo</th>
-                                <th>Serial</th>
-                                <th>Cantidad</th>
-                                <th>Estado</th>
-                                <th>Ubicación</th>
-                                <th>Fecha</th>
+                                <th onclick="vistaStock.ordenarPor('nombre')" style="cursor: pointer;">Componente</th>
+                                <th onclick="vistaStock.ordenarPor('modelo')" style="cursor: pointer;">Modelo</th>
+                                <th onclick="vistaStock.ordenarPor('serial')" style="cursor: pointer;">Serial</th>
+                                <th onclick="vistaStock.ordenarPor('estado')" style="cursor: pointer;">Estado</th>
+                                <th style="cursor: default;">Descripción</th>
+                                <th onclick="vistaStock.ordenarPor('fechaCreacion')" style="cursor: pointer;">Fecha</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -346,23 +344,40 @@
                         <!-- Fila de edición rápida -->
                         <tbody id="filaEdicionRapida">
                             <tr class="fila-edicion-rapida">
-                                <td><input type="text" class="input-edicion-rapida" placeholder="Nombre" id="rapidaNombre"></td>
+                                <td>
+                                    <select class="input-edicion-rapida" id="rapidaNombre">
+                                        <option value="">Seleccionar componente</option>
+                                        <option value="Procesador">Procesador</option>
+                                        <option value="Memoria RAM">Memoria RAM</option>
+                                        <option value="Disco Duro">Disco Duro</option>
+                                        <option value="Tarjeta Madre">Tarjeta Madre</option>
+                                        <option value="Tarjeta de Video">Tarjeta de Video</option>
+                                        <option value="Fuente de Poder">Fuente de Poder</option>
+                                        <option value="Gabinete">Gabinete</option>
+                                        <option value="Monitor">Monitor</option>
+                                        <option value="Teclado">Teclado</option>
+                                        <option value="Mouse">Mouse</option>
+                                        <option value="Laptop">Laptop</option>
+                                        <option value="Notebook">Notebook</option>
+                                        <option value="Impresora">Impresora</option>
+                                    </select>
+                                </td>
                                 <td><input type="text" class="input-edicion-rapida" placeholder="Modelo" id="rapidaModelo"></td>
                                 <td><input type="text" class="input-edicion-rapida" placeholder="Serial" id="rapidaSerial"></td>
-                                <td><input type="number" class="input-edicion-rapida" placeholder="1" min="1" value="1" id="rapidaCantidad"></td>
                                 <td>
                                     <select class="input-edicion-rapida" id="rapidaEstado">
                                         <option value="nuevo">Nuevo</option>
                                         <option value="usado">Usado</option>
                                         <option value="reparado">Reparado</option>
+                                        <option value="prestado">Prestado</option>
                                         <option value="dado-de-baja">Dado de baja</option>
                                     </select>
                                 </td>
-                                <td><input type="text" class="input-edicion-rapida" placeholder="Ubicación" id="rapidaUbicacion"></td>
-                                <td class="fecha-auto">Auto</td>
+                                <td><input type="text" class="input-edicion-rapida" placeholder="Descripción" id="rapidaDescripcion"></td>
+                                <td><input type="date" class="input-edicion-rapida" id="rapidaFecha"></td>
                                 <td>
                                     <button type="button" class="btn-guardar-rapido" onclick="guardarEdicionRapida()" title="Guardar">✅</button>
-                                    <button type="button" class="btn-cancelar-rapido" onclick="cancelarEdicionRapida()" title="Cancelar">❌</button>
+                                    <button type="button" class="btn-cancelar-rapido" onclick="cancelarEdicionRapida()" title="Limpiar">❌</button>
                                 </td>
                             </tr>
                         </tbody>

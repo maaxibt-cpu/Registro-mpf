@@ -7,6 +7,7 @@ class VistaActividades {
         this.filtroEstado = document.getElementById('filterEstado');
         
         this.establecerFechaHoy();
+        this.ordenActual = { campo: 'fecha', direccion: 'desc' };
     }
 
     establecerFechaHoy() {
@@ -90,13 +91,13 @@ class VistaActividades {
                 <table class="tabla-actividades">
                     <thead>
                         <tr>
-                            <th>Fecha</th>
-                            <th>Técnico</th>
-                            <th>Tipo de Problema</th>
-                            <th>Solicitante</th>
-                            <th>Circunscripción</th>
-                            <th>Descripción</th>
-                            <th>Estado</th>
+                            <th onclick="vistaActividades.ordenarPor('fecha')" style="cursor: pointer;">Fecha</th>
+                            <th onclick="vistaActividades.ordenarPor('tecnico')" style="cursor: pointer;">Técnico</th>
+                            <th onclick="vistaActividades.ordenarPor('tipo')" style="cursor: pointer;">Tipo de Problema</th>
+                            <th onclick="vistaActividades.ordenarPor('solicitante')" style="cursor: pointer;">Solicitante</th>
+                            <th onclick="vistaActividades.ordenarPor('circunscripcion')" style="cursor: pointer;">Circunscripción</th>
+                            <th style="cursor: default;">Descripción</th>
+                            <th onclick="vistaActividades.ordenarPor('estado')" style="cursor: pointer;">Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -171,5 +172,49 @@ class VistaActividades {
             solicitanteInput.value = `${persona.nombre} ${persona.apellido}`;
             solicitanteIdInput.value = persona.id;
         }
+    }
+
+    ordenarPor(campo) {
+        // Cambiar dirección si es el mismo campo
+        if (this.ordenActual.campo === campo) {
+            this.ordenActual.direccion = this.ordenActual.direccion === 'asc' ? 'desc' : 'asc';
+        } else {
+            this.ordenActual.campo = campo;
+            this.ordenActual.direccion = 'asc';
+        }
+
+        // Obtener actividades actuales del modelo y ordenar
+        if (window.aplicacion && window.aplicacion.controlador) {
+            // Obtener todas las actividades del modelo
+            const actividades = window.aplicacion.controlador.modeloActividades.obtenerTodasActividades();
+            this.ordenarActividades(actividades);
+        }
+    }
+
+    ordenarActividades(actividades) {
+        actividades.sort((a, b) => {
+            let valorA = a[this.ordenActual.campo] || '';
+            let valorB = b[this.ordenActual.campo] || '';
+
+            // Convertir fechas para comparación
+            if (this.ordenActual.campo === 'fecha') {
+                valorA = new Date(valorA);
+                valorB = new Date(valorB);
+            }
+
+            // Convertir a minúsculas para comparación case-insensitive
+            if (typeof valorA === 'string') valorA = valorA.toLowerCase();
+            if (typeof valorB === 'string') valorB = valorB.toLowerCase();
+
+            if (valorA < valorB) {
+                return this.ordenActual.direccion === 'asc' ? -1 : 1;
+            }
+            if (valorA > valorB) {
+                return this.ordenActual.direccion === 'asc' ? 1 : -1;
+            }
+            return 0;
+        });
+
+        this.renderizarActividades(actividades);
     }
 }

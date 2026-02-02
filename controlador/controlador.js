@@ -425,8 +425,23 @@ class ControladorActividades {
             </select>
         `;
         
-        // Circunscripción - input text editable
-        celdas[4].innerHTML = `<input type="text" class="edit-input" value="${actividad.circunscripcion || ''}" data-field="circunscripcion" placeholder="Ingrese circunscripción">`;
+        // Circunscripción - select con opciones del sistema
+        const opcionesCircunscripcion = [
+            'Primera Circunscripción Capital',
+            'Segunda Circunscripción Chilecito',
+            'Tercera Circunscripción Chamical',
+            'Cuarta Circunscripción Aimogasta',
+            'Quinta Circunscripción Chepes',
+            'Sexta Circunscripción Villa Unión'
+        ];
+        celdas[4].innerHTML = `
+            <select class="edit-select" data-field="circunscripcion" style="min-width: 260px;">
+                <option value="">Seleccione circunscripción</option>
+                ${opcionesCircunscripcion.map(op => 
+                    `<option value="${op}" ${op === actividad.circunscripcion ? 'selected' : ''}>${op}</option>`
+                ).join('')}
+            </select>
+        `;
         
         // Descripción - textarea
         celdas[5].innerHTML = `<textarea class="edit-textarea" data-field="descripcion" rows="2">${actividad.descripcion || ''}</textarea>`;
@@ -480,11 +495,11 @@ class ControladorActividades {
         const tecnicoSelect = fila.querySelector('select[data-field="tecnico"]');
         const tipoSelect = fila.querySelector('select[data-field="tipo"]');
         const solicitanteSelect = fila.querySelector('select[data-field="solicitanteId"]');
-        const circunscripcionInput = fila.querySelector('input[data-field="circunscripcion"]');
+        const circunscripcionSelect = fila.querySelector('select[data-field="circunscripcion"]');
         const descripcionTextarea = fila.querySelector('textarea[data-field="descripcion"]');
         const estadoSelect = fila.querySelector('select[data-field="estado"]');
 
-        if (!fechaInput || !tecnicoSelect || !tipoSelect || !solicitanteSelect || !circunscripcionInput || !estadoSelect) {
+        if (!fechaInput || !tecnicoSelect || !tipoSelect || !solicitanteSelect || !circunscripcionSelect || !estadoSelect) {
             console.error('No se encontraron todos los campos de edición');
             return;
         }
@@ -493,7 +508,7 @@ class ControladorActividades {
         const tecnico = tecnicoSelect.value;
         const tipo = tipoSelect.value;
         const solicitanteId = solicitanteSelect.value;
-        const circunscripcion = circunscripcionInput.value;
+        const circunscripcion = circunscripcionSelect.value;
         const descripcion = descripcionTextarea ? descripcionTextarea.value : '';
         const estado = estadoSelect.value;
 

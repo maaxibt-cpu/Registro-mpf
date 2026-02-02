@@ -24,6 +24,7 @@ class Aplicacion {
 document.addEventListener('DOMContentLoaded', () => {
     window.aplicacion = new Aplicacion();
     window.vistaPersonas = aplicacion.vistaPersonas;
+    window.vistaActividades = aplicacion.vistaActividades;
     
     // Inicializar el controlador y hacer disponibles las funciones globales
     if (window.aplicacion.controlador) {
@@ -176,6 +177,21 @@ function mostrarModalConfirmacionSolicitante(id) {
     }
 }
 
+function mostrarModalConfirmacionParte(id) {
+    elementoAEliminarId = id;
+    tipoElementoAEliminar = 'parte';
+    
+    const modal = document.getElementById('modalConfirmacion');
+    const titulo = document.getElementById('modalConfirmacionTitulo');
+    const mensaje = document.getElementById('modalConfirmacionMensaje');
+    
+    if (modal && titulo && mensaje) {
+        titulo.textContent = '⚠️ Confirmar Eliminación de Parte';
+        mensaje.textContent = '¿Está seguro de que desea eliminar esta parte del inventario?';
+        modal.style.display = 'flex';
+    }
+}
+
 function cerrarModalConfirmacion() {
     const modal = document.getElementById('modalConfirmacion');
     if (modal) {
@@ -210,6 +226,14 @@ function confirmarEliminacion() {
             }
             
             window.aplicacion.vistaActividades.mostrarNotificacion('Solicitante eliminado correctamente', 'exito');
+            
+        } else if (tipoElementoAEliminar === 'parte') {
+            // Eliminar parte del inventario
+            if (window.controladorStock) {
+                window.controladorStock.eliminarParte(elementoAEliminarId);
+            } else {
+                console.error('Controlador de stock no disponible');
+            }
         }
         
         cerrarModalConfirmacion();
@@ -495,18 +519,72 @@ function inicializarControladorStock() {
     // Verificar si los componentes de stock están disponibles
     if (typeof ModeloStock === 'undefined' || typeof VistaStock === 'undefined' || typeof ControladorStock === 'undefined') {
         console.error('Componentes de stock no disponibles');
-        return;
+        return false;
     }
     
     try {
         const modeloStock = new ModeloStock();
         const vistaStock = new VistaStock();
         window.controladorStock = new ControladorStock(modeloStock, vistaStock);
+        window.vistaStock = vistaStock; // Hacer disponible globalmente
         console.log('Controlador de stock inicializado correctamente');
+        return true;
     } catch (error) {
         console.error('Error al inicializar controlador de stock:', error);
+        return false;
     }
 }
+
+// Función de depuración para verificar el estado del controlador
+window.verificarEstadoStock = function() {
+    console.group('🔍 Depuración - Estado del Controlador de Stock');
+    console.log('Controlador disponible:', !!window.controladorStock);
+    
+    if (window.controladorStock) {
+        console.log('Modelo disponible:', !!window.controladorStock.modeloStock);
+        console.log('Vista disponible:', !!window.controladorStock.vistaStock);
+        
+        // Verificar funciones
+        console.log('Función iniciarEdicionParte disponible:', typeof window.controladorStock.iniciarEdicionParte === 'function');
+        console.log('Función eliminarParte disponible:', typeof window.controladorStock.eliminarParte === 'function');
+        
+        // Verificar datos
+        if (window.controladorStock.modeloStock) {
+            const partes = window.controladorStock.modeloStock.obtenerPartes();
+            console.log('Número de partes en inventario:', partes.length);
+            if (partes.length > 0) {
+                console.log('Primera parte:', partes[0]);
+            }
+        }
+    } else {
+        console.log('⚠️ Controlador no inicializado. Ejecuta: inicializarControladorStock()');
+    }
+    console.groupEnd();
+};
+
+// Función para probar edición manual
+window.probarEdicionStock = function(id) {
+    if (!window.controladorStock) {
+        console.error('Controlador no disponible');
+        return;
+    }
+    
+    console.log('🔧 Probando edición de parte con ID:', id);
+    window.controladorStock.iniciarEdicionParte(id);
+    console.log('✅ Función ejecutada');
+};
+
+// Función para probar eliminación manual  
+window.probarEliminacionStock = function(id) {
+    if (!window.controladorStock) {
+        console.error('Controlador no disponible');
+        return;
+    }
+    
+    console.log('🗑️ Probando eliminación de parte con ID:', id);
+    window.controladorStock.eliminarParte(id);
+    console.log('✅ Función ejecutada');
+};
 
 // Cerrar modal de stock al hacer clic fuera del contenido
 document.addEventListener('DOMContentLoaded', function() {
@@ -554,18 +632,31 @@ document.addEventListener('DOMContentLoaded', function() {
             nombre: nombre,
             modelo: document.getElementById('rapidaModelo').value.trim(),
             serial: document.getElementById('rapidaSerial').value.trim(),
-            cantidad: parseInt(document.getElementById('rapidaCantidad').value) || 1,
             estado: document.getElementById('rapidaEstado').value,
-            ubicacion: document.getElementById('rapidaUbicacion').value.trim(),
-            observaciones: '' // La edición rápida no incluye observaciones
+            descripcion: document.getElementById('rapidaDescripcion').value.trim(),
+            ubicacion: '',
+            observaciones: ''
         };
+
+        // Obtener fecha manual si se ingresó
+        const fechaInput = document.getElementById('rapidaFecha').value;
+        if (fechaInput) {
+            datos.fechaCreacion = new Date(fechaInput).toISOString();
+        }
 
         // Usar el controlador existente para guardar
         const nuevaParte = window.controladorStock.modeloStock.agregarParte(datos);
         if (nuevaParte) {
-            window.controladorStock.mostrarNotificacion('Parte agregada rápidamente', 'success');
+            window.controladorStock.mostrarNotificacion('Componente agregado correctamente', 'success');
             window.controladorStock.cargarPartes();
-            cancelarEdicionRapida(); // Limpiar campos después de guardar
+            
+            // Limpiar campos
+            document.getElementById('rapidaNombre').value = '';
+            document.getElementById('rapidaModelo').value = '';
+            document.getElementById('rapidaSerial').value = '';
+            document.getElementById('rapidaEstado').value = 'nuevo';
+            document.getElementById('rapidaDescripcion').value = '';
+            document.getElementById('rapidaFecha').value = '';
         }
     };
 
@@ -574,9 +665,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('rapidaNombre').value = '';
         document.getElementById('rapidaModelo').value = '';
         document.getElementById('rapidaSerial').value = '';
-        document.getElementById('rapidaCantidad').value = '1';
         document.getElementById('rapidaEstado').value = 'nuevo';
-        document.getElementById('rapidaUbicacion').value = '';
+        document.getElementById('rapidaDescripcion').value = '';
+        document.getElementById('rapidaFecha').value = '';
     };
 });
 
